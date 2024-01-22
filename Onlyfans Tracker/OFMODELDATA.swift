@@ -33,6 +33,9 @@ struct OnlyFansProfile: Codable {
     let canEarn: Bool
     let canAddSubscriber: Bool
     let subscribePrice: Double
+    let audiosCount: Int
+    let mediasCount: Int
+    let lastSeen: String
     let subscriptionBundles: [SubscriptionBundle]
 
     // Additional properties
@@ -41,9 +44,7 @@ struct OnlyFansProfile: Codable {
     let archivedPostsCount: Int
     let privateArchivedPostsCount: Int
   
-    let audiosCount: Int
-    let mediasCount: Int
-    let lastSeen: String
+  
 
     // New properties
   

@@ -11,17 +11,21 @@ class DataViewController: UIViewController {
 
  
     // Model data (replace with actual data)
-    var name: String = ""
-    var username: String = ""
-    var photosCount: Int = 0
-    var videosCount: Int = 0
-    var favoritedCount: String = ""
-    var canLookStory: Bool = false
-    var canCommentStory: Bool = false
-    var hasNotViewedStory: Bool = false
-    var isVerified: Bool = false
-    var canPayInternal: Bool = false
-    // ... Add more properties based on your needs
+    // Model data (replace with actual data)
+      var name: String = ""
+      var username: String = ""
+      var photosCount: Int = 0
+      var videosCount: Int = 0
+      var favoritedCount: String = ""
+      var canLookStory: Bool = false
+      var canCommentStory: Bool = false
+      var hasNotViewedStory: Bool = false
+      var isVerified: Bool = false
+      var canPayInternal: Bool = false
+      // Additional properties
+      var hasScheduledStream: Bool = false
+      var hasStream: Bool = false
+      var hasStories: Bool = false
 
     let onlyFansAPIClient = OnlyFansAPIClient()
 
@@ -81,6 +85,21 @@ class DataViewController: UIViewController {
         let label = createBorderedLabel()
         return label
     }()
+    
+    var hasScheduledStreamLabel: UILabel = {
+          let label = createBorderedLabel()
+          return label
+      }()
+
+      var hasStreamLabel: UILabel = {
+          let label = createBorderedLabel()
+          return label
+      }()
+
+      var hasStoriesLabel: UILabel = {
+          let label = createBorderedLabel()
+          return label
+      }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,6 +120,9 @@ class DataViewController: UIViewController {
         scrollView.addSubview(hasNotViewedStoryLabel)
         scrollView.addSubview(isVerifiedLabel)
         scrollView.addSubview(canPayInternalLabel)
+        scrollView.addSubview(hasScheduledStreamLabel)
+        scrollView.addSubview(hasStreamLabel)
+        scrollView.addSubview(hasStoriesLabel)
 
         // Add scroll view to the main view
         view.addSubview(scrollView)
@@ -122,6 +144,9 @@ class DataViewController: UIViewController {
         hasNotViewedStoryLabel.translatesAutoresizingMaskIntoConstraints = false
         isVerifiedLabel.translatesAutoresizingMaskIntoConstraints = false
         canPayInternalLabel.translatesAutoresizingMaskIntoConstraints = false
+        hasScheduledStreamLabel.translatesAutoresizingMaskIntoConstraints = false
+        hasStreamLabel.translatesAutoresizingMaskIntoConstraints = false
+        hasStoriesLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let labelWidthMultiplier: CGFloat = 0.8
         let labelHeightMultiplier: CGFloat = 0.1 // Adjusted height multiplier
@@ -185,14 +210,31 @@ class DataViewController: UIViewController {
             canPayInternalLabel.topAnchor.constraint(equalTo: isVerifiedLabel.bottomAnchor, constant: 10),
             canPayInternalLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             canPayInternalLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
-            canPayInternalLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor)
+            canPayInternalLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+            
+            hasScheduledStreamLabel.topAnchor.constraint(equalTo: canPayInternalLabel.bottomAnchor, constant: 10),
+                       hasScheduledStreamLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                       hasScheduledStreamLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+                       hasScheduledStreamLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+
+                       // Has Stream label below Has Scheduled Stream
+                       hasStreamLabel.topAnchor.constraint(equalTo: hasScheduledStreamLabel.bottomAnchor, constant: 10),
+                       hasStreamLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                       hasStreamLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+                       hasStreamLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+
+                       // Has Stories label below Has Stream
+                       hasStoriesLabel.topAnchor.constraint(equalTo: hasStreamLabel.bottomAnchor, constant: 10),
+                       hasStoriesLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                       hasStoriesLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+                       hasStoriesLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
         ])
     }
 
 
     override func viewDidAppear(_ animated: Bool) {
-       scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height+300)
-    }
+          scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height+300)
+       }
     func fetchAndPrintOnlyFansData() {
         onlyFansAPIClient.fetchOnlyFansProfiles { [weak self] result in
             guard let self = self else { return }
@@ -211,7 +253,10 @@ class DataViewController: UIViewController {
                     self.hasNotViewedStory = firstProfile.hasNotViewedStory
                     self.isVerified = firstProfile.isVerified
                     self.canPayInternal = firstProfile.canPayInternal
-
+                    self.hasScheduledStream = firstProfile.hasScheduledStream
+                    self.hasStream = firstProfile.hasStream
+                    self.hasStories = firstProfile.hasStories
+                  
                     // Print the fetched data
                     print("Name: \(self.name)")
                     print("Username: \(self.username)")
@@ -223,6 +268,10 @@ class DataViewController: UIViewController {
                     print("Has Not Viewed Story: \(self.hasNotViewedStory)")
                     print("Is Verified: \(self.isVerified)")
                     print("Can Pay Internal: \(self.canPayInternal)")
+                    // Additional properties
+                    print("Has Scheduled Stream: \(self.hasScheduledStream)")
+                    print("Has Stream: \(self.hasStream)")
+                    print("Has Stories: \(self.hasStories)")
 
                     // Update UI elements with the new values
                     DispatchQueue.main.async {
@@ -236,6 +285,10 @@ class DataViewController: UIViewController {
                         self.hasNotViewedStoryLabel.text = "Has Not Viewed Story: \(self.hasNotViewedStory)"
                         self.isVerifiedLabel.text = "Is Verified: \(self.isVerified)"
                         self.canPayInternalLabel.text = "Can Pay Internal: \(self.canPayInternal)"
+                        // Additional labels
+                        self.hasScheduledStreamLabel.text = "Has Scheduled Stream: \(self.hasScheduledStream)"
+                        self.hasStreamLabel.text = "Has Stream: \(self.hasStream)"
+                        self.hasStoriesLabel.text = "Has Stories: \(self.hasStories)"
                     }
                 }
 
@@ -244,6 +297,7 @@ class DataViewController: UIViewController {
             }
         }
     }
+
 
     private static func createBorderedLabel() -> UILabel {
         let label = UILabel()
