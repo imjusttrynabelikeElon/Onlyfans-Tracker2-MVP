@@ -19,40 +19,59 @@ class ViewController: UIViewController {
     let onlyFansAPIClient = OnlyFansAPIClient()
 
     // UI Elements
-    let nameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
+    let scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        return scrollView
     }()
 
-    let usernameLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
+    private static func createBorderedButton() -> UIButton {
+        let button = UIButton(type: .system)
+        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(.black, for: .normal)
+        button.layer.borderColor = UIColor.black.cgColor
+        button.layer.borderWidth = 1.0
+        button.layer.cornerRadius = 8.0
+        button.clipsToBounds = true
+        return button
+    }
+
+    // ...
+
+    let nameLabel: UIButton = {
+        let button = createBorderedButton()
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        return button
     }()
 
-    let photosCountLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
+    let usernameLabel: UIButton = {
+        let button = createBorderedButton()
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        return button
     }()
 
-    let videosCountLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
+    let photosCountLabel: UIButton = {
+        let button = createBorderedButton()
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        return button
     }()
 
-    let favoritedCountLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.textColor = .black
-        return label
+    let videosCountLabel: UIButton = {
+        let button = createBorderedButton()
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        return button
     }()
+
+    let favoritedCountLabel: UIButton = {
+        let button = createBorderedButton()
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        return button
+    }()
+
+    @objc func buttonTapped(_ sender: UIButton) {
+        // Handle button tap, you can identify which button was tapped using sender.tag or other properties
+        print("Button tapped")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,42 +81,79 @@ class ViewController: UIViewController {
     }
 
     func setupUI() {
-        // Add UI elements to the view
-        view.addSubview(nameLabel)
-        view.addSubview(usernameLabel)
-        view.addSubview(photosCountLabel)
-        view.addSubview(videosCountLabel)
-        view.addSubview(favoritedCountLabel)
+        // Add UI elements to the scroll view
+        scrollView.addSubview(nameLabel)
+        scrollView.addSubview(usernameLabel)
+        scrollView.addSubview(photosCountLabel)
+        scrollView.addSubview(videosCountLabel)
+        scrollView.addSubview(favoritedCountLabel)
 
-        // Set up constraints
+        // Add scroll view to the main view
+        view.addSubview(scrollView)
+
+        // Set up constraints for scroll view
+        scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+
+        // Set up constraints for UI elements within the scroll view
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         usernameLabel.translatesAutoresizingMaskIntoConstraints = false
         photosCountLabel.translatesAutoresizingMaskIntoConstraints = false
         videosCountLabel.translatesAutoresizingMaskIntoConstraints = false
         favoritedCountLabel.translatesAutoresizingMaskIntoConstraints = false
 
+        let labelWidthMultiplier: CGFloat = 0.4 // Adjusted width multiplier for smaller squares
+        let labelHeightMultiplier: CGFloat = 0.15 // Adjusted height multiplier for smaller squares
+
         NSLayoutConstraint.activate([
-            // Name label at the top
-            nameLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            nameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            // Name label at the top left
+            nameLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            nameLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            nameLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: labelWidthMultiplier),
+            nameLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: labelHeightMultiplier),
 
-            // Username label below name
-            usernameLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 10),
-            usernameLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            // Username label at the top right
+            usernameLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            usernameLabel.leadingAnchor.constraint(equalTo: nameLabel.trailingAnchor, constant: 20),
+            usernameLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: labelWidthMultiplier),
+            usernameLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: labelHeightMultiplier),
 
-            // Photos Count label below username
-            photosCountLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 10),
-            photosCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            // Photos Count label in the second row left
+            photosCountLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 20),
+            photosCountLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            photosCountLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: labelWidthMultiplier),
+            photosCountLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: labelHeightMultiplier),
 
-            // Videos Count label below photos count
-            videosCountLabel.topAnchor.constraint(equalTo: photosCountLabel.bottomAnchor, constant: 10),
-            videosCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            // Videos Count label in the second row right
+            videosCountLabel.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 20),
+            videosCountLabel.leadingAnchor.constraint(equalTo: photosCountLabel.trailingAnchor, constant: 20),
+            videosCountLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: labelWidthMultiplier),
+            videosCountLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: labelHeightMultiplier),
 
-            // Favorited Count label below videos count
-            favoritedCountLabel.topAnchor.constraint(equalTo: videosCountLabel.bottomAnchor, constant: 10),
-            favoritedCountLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
+            // Favorited Count label in the third row left
+            favoritedCountLabel.topAnchor.constraint(equalTo: photosCountLabel.bottomAnchor, constant: 20),
+            favoritedCountLabel.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            favoritedCountLabel.widthAnchor.constraint(equalTo: scrollView.widthAnchor, multiplier: labelWidthMultiplier),
+            favoritedCountLabel.heightAnchor.constraint(equalTo: scrollView.heightAnchor, multiplier: labelHeightMultiplier),
         ])
+
+        // Set content size of the scroll view
+        let totalHeight = scrollView.subviews.reduce(0) { $0 + $1.bounds.height + 20 }
+        scrollView.contentSize = CGSize(width: view.bounds.width, height: totalHeight)
+
+        // Set the number of lines for the labels (buttons)
+        nameLabel.titleLabel?.numberOfLines = 2
+        usernameLabel.titleLabel?.numberOfLines = 2
+        photosCountLabel.titleLabel?.numberOfLines = 2
+        videosCountLabel.titleLabel?.numberOfLines = 2
+        favoritedCountLabel.titleLabel?.numberOfLines = 2
     }
+
+
+
+
 
     func fetchAndPrintOnlyFansData() {
         onlyFansAPIClient.fetchOnlyFansProfiles { [weak self] result in
@@ -122,11 +178,15 @@ class ViewController: UIViewController {
 
                     // Update UI elements with the new values
                     DispatchQueue.main.async {
-                        self.nameLabel.text = "Name: \(self.name)"
-                        self.usernameLabel.text = "Username: \(self.username)"
-                        self.photosCountLabel.text = "Photos Count: \(self.photosCount)"
-                        self.videosCountLabel.text = "Videos Count: \(self.videosCount)"
-                        self.favoritedCountLabel.text = "Favorited Count: \(self.favoritedCount)"
+                        // Update UI elements with the new values
+                        DispatchQueue.main.async {
+                            self.nameLabel.setTitle("Name: \(self.name)", for: .normal)
+                            self.usernameLabel.setTitle("Username: \(self.username)", for: .normal)
+                            self.photosCountLabel.setTitle("Photos Count: \(self.photosCount)", for: .normal)
+                            self.videosCountLabel.setTitle("Videos Count: \(self.videosCount)", for: .normal)
+                            self.favoritedCountLabel.setTitle("Favorited Count: \(self.favoritedCount)", for: .normal)
+                        }
+
                     }
                 }
 
@@ -134,5 +194,16 @@ class ViewController: UIViewController {
                 print("Error fetching OnlyFans profiles: \(error)")
             }
         }
+    }
+
+    private static func createBorderedLabel() -> UILabel {
+        let label = UILabel()
+        label.textAlignment = .center // Set text alignment to center
+        label.textColor = .black
+        label.layer.borderColor = UIColor.black.cgColor
+        label.layer.borderWidth = 1.0
+        label.layer.cornerRadius = 8.0
+        label.clipsToBounds = true
+        return label
     }
 }
