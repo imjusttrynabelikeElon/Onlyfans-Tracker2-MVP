@@ -13,6 +13,7 @@
 		C978887E2B5ED0B800F00409 /* SignUPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887D2B5ED0B800F00409 /* SignUPViewController.swift */; };
 		C97888802B5ED21300F00409 /* NavSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */; };
 		C97888832B5ED47700F00409 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C97888822B5ED47700F00409 /* SDWebImage */; };
+		C97888852B5EE21D00F00409 /* SelectOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */; };
 		C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */; };
 		C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */; };
 		C9FB4DA32B5D9DB6001D962A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA22B5D9DB6001D962A /* ViewController.swift */; };
@@ -27,6 +28,7 @@
 		C978887B2B5E172D00F00409 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		C978887D2B5ED0B800F00409 /* SignUPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUPViewController.swift; sourceTree = "<group>"; };
 		C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSelectorViewController.swift; sourceTree = "<group>"; };
+		C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectOptionViewController.swift; sourceTree = "<group>"; };
 		C9FB4D9B2B5D9DB6001D962A /* Onlyfans Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Onlyfans Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -76,6 +78,7 @@
 				C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */,
 				C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */,
 				C9FB4DA42B5D9DB6001D962A /* Main.storyboard */,
+				C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */,
 				C9FB4DA72B5D9DB8001D962A /* Assets.xcassets */,
 				C9FB4DA92B5D9DB8001D962A /* LaunchScreen.storyboard */,
 				C9FB4DAC2B5D9DB8001D962A /* Info.plist */,
@@ -168,6 +171,7 @@
 				C978887E2B5ED0B800F00409 /* SignUPViewController.swift in Sources */,
 				C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */,
 				C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */,
+				C97888852B5EE21D00F00409 /* SelectOptionViewController.swift in Sources */,
 				C97888802B5ED21300F00409 /* NavSelectorViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
