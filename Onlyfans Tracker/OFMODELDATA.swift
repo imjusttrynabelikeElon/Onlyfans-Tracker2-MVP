@@ -48,6 +48,7 @@ struct OnlyFansProfile: Codable {
     let privateArchivedPostsCount: Int
     let canCreatePromotion: Bool
     let canCreateTrial: Bool
+    let avatar: String
     
     
     
@@ -74,7 +75,7 @@ struct OnlyFansProfile: Codable {
    
 
     enum CodingKeys: String, CodingKey {
-        case id, name, username, canLookStory, canCommentStory, hasNotViewedStory, isVerified, canPayInternal, hasScheduledStream, hasStream, hasStories, tipsEnabled, tipsTextEnabled, tipsMin, tipsMinInternal, tipsMax, canEarn, canAddSubscriber, subscribePrice, subscriptionBundles, location, postsCount, archivedPostsCount, privateArchivedPostsCount, photosCount, videosCount, audiosCount, mediasCount, lastSeen, favoritesCount, favoritedCount, showPostsInFeed, canReceiveChatMessage, isPerformer, isRealPerformer, isSpotifyConnected, subscribersCount, hasPinnedPosts, canChat, callPrice, isPrivateRestriction, showSubscribersCount, showMediaCount, canCreatePromotion, canCreateTrial, isAdultContent, canTrialSend, hasLinks
+        case id, name, username, canLookStory, canCommentStory, hasNotViewedStory, isVerified, canPayInternal, hasScheduledStream, hasStream, hasStories, tipsEnabled, tipsTextEnabled, tipsMin, tipsMinInternal, tipsMax, canEarn, canAddSubscriber, subscribePrice, subscriptionBundles, location, postsCount, archivedPostsCount, privateArchivedPostsCount, photosCount, videosCount, audiosCount, mediasCount, lastSeen, favoritesCount, favoritedCount, showPostsInFeed, canReceiveChatMessage, isPerformer, isRealPerformer, isSpotifyConnected, subscribersCount, hasPinnedPosts, canChat, callPrice, isPrivateRestriction, showSubscribersCount, showMediaCount, canCreatePromotion, canCreateTrial, isAdultContent, canTrialSend, hasLinks, avatar
     }
 }
 
