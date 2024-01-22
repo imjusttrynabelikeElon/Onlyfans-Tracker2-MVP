@@ -11,9 +11,12 @@ import Foundation
 
 
 struct OnlyFansProfile: Codable {
-    let id: Int
     let name: String
     let username: String
+    let photosCount: Int
+    let videosCount: Int
+    let favoritesCount: Int
+    let id: Int
     let canLookStory: Bool
     let canCommentStory: Bool
     let hasNotViewedStory: Bool
@@ -37,14 +40,13 @@ struct OnlyFansProfile: Codable {
     let postsCount: Int
     let archivedPostsCount: Int
     let privateArchivedPostsCount: Int
-    let photosCount: Int
-    let videosCount: Int
+  
     let audiosCount: Int
     let mediasCount: Int
     let lastSeen: String
 
     // New properties
-    let favoritesCount: Int
+  
     let favoritedCount: Int
     let showPostsInFeed: Bool
     let canReceiveChatMessage: Bool

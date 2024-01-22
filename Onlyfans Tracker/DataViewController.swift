@@ -1,17 +1,15 @@
 //
-//  ViewController.swift
+//  DataViewController.swift
 //  Onlyfans Tracker
 //
 //  Created by Karon Bell on 1/21/24.
 //
 
-
 import UIKit
 
+class DataViewController: UIViewController {
 
-
-class ViewController: UIViewController {
-
+ 
     // Model data (replace with actual data)
     var name: String = ""
     var username: String = ""
@@ -192,7 +190,9 @@ class ViewController: UIViewController {
     }
 
 
-
+    override func viewDidAppear(_ animated: Bool) {
+       scrollView.contentSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height+300)
+    }
     func fetchAndPrintOnlyFansData() {
         onlyFansAPIClient.fetchOnlyFansProfiles { [weak self] result in
             guard let self = self else { return }

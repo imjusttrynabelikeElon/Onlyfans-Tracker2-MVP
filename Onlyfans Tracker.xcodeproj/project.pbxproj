@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C939F0B82B5DC04400EAC39F /* OFAPICALLER.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939F0B72B5DC04400EAC39F /* OFAPICALLER.swift */; };
 		C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */; };
+		C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887B2B5E172D00F00409 /* DataViewController.swift */; };
 		C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */; };
 		C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */; };
 		C9FB4DA32B5D9DB6001D962A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA22B5D9DB6001D962A /* ViewController.swift */; };
@@ -20,6 +21,7 @@
 /* Begin PBXFileReference section */
 		C939F0B72B5DC04400EAC39F /* OFAPICALLER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFAPICALLER.swift; sourceTree = "<group>"; };
 		C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFMODELDATA.swift; sourceTree = "<group>"; };
+		C978887B2B5E172D00F00409 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		C9FB4D9B2B5D9DB6001D962A /* Onlyfans Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Onlyfans Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 				C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */,
 				C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */,
 				C9FB4DA22B5D9DB6001D962A /* ViewController.swift */,
+				C978887B2B5E172D00F00409 /* DataViewController.swift */,
 				C939F0B72B5DC04400EAC39F /* OFAPICALLER.swift */,
 				C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */,
 				C9FB4DA42B5D9DB6001D962A /* Main.storyboard */,
@@ -148,6 +151,7 @@
 				C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */,
 				C939F0B82B5DC04400EAC39F /* OFAPICALLER.swift in Sources */,
 				C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */,
+				C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */,
 				C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
