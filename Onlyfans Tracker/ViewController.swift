@@ -23,6 +23,10 @@ class ViewController: UIViewController {
     var hasNotViewedStory: Bool = false
     var isVerified: Bool = false
     var canPayInternal: Bool = false
+    var tipsEnabled: Bool = false
+    var tipsMin: Int = 0
+    var tipsMax: Int = 0
+    var canEarn: Bool = false
     // ... Add more properties based on your needs
 
     let onlyFansAPIClient = OnlyFansAPIClient()
@@ -83,6 +87,27 @@ class ViewController: UIViewController {
         let label = createBorderedLabel()
         return label
     }()
+    
+    let tipsEnabledLabel: UILabel = {
+        let label = createBorderedLabel()
+        return label
+    }()
+    
+    
+    let tipsMinLabel: UILabel = {
+        let label = createBorderedLabel()
+        return label
+    }()
+    
+    let tipsMaxLabel: UILabel = {
+        let label = createBorderedLabel()
+        return label
+    }()
+    
+    let canEarnLabel: UILabel = {
+        let label = createBorderedLabel()
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -103,6 +128,10 @@ class ViewController: UIViewController {
         scrollView.addSubview(hasNotViewedStoryLabel)
         scrollView.addSubview(isVerifiedLabel)
         scrollView.addSubview(canPayInternalLabel)
+        scrollView.addSubview(tipsEnabledLabel)
+        scrollView.addSubview(tipsMaxLabel)
+        scrollView.addSubview(tipsMinLabel)
+        scrollView.addSubview(canEarnLabel)
 
         // Add scroll view to the main view
         view.addSubview(scrollView)
@@ -124,6 +153,10 @@ class ViewController: UIViewController {
         hasNotViewedStoryLabel.translatesAutoresizingMaskIntoConstraints = false
         isVerifiedLabel.translatesAutoresizingMaskIntoConstraints = false
         canPayInternalLabel.translatesAutoresizingMaskIntoConstraints = false
+        tipsEnabledLabel.translatesAutoresizingMaskIntoConstraints = false
+        tipsMinLabel.translatesAutoresizingMaskIntoConstraints = false
+        canEarnLabel.translatesAutoresizingMaskIntoConstraints = false
+        tipsMaxLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let labelWidthMultiplier: CGFloat = 0.8
         let labelHeightMultiplier: CGFloat = 0.1 // Adjusted height multiplier
@@ -187,7 +220,30 @@ class ViewController: UIViewController {
             canPayInternalLabel.topAnchor.constraint(equalTo: isVerifiedLabel.bottomAnchor, constant: 10),
             canPayInternalLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             canPayInternalLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
-            canPayInternalLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor)
+            canPayInternalLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+            
+            tipsEnabledLabel.topAnchor.constraint(equalTo: canPayInternalLabel.bottomAnchor, constant: 10),
+               tipsEnabledLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+               tipsEnabledLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+               tipsEnabledLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+
+               // Tips Min label below Tips Enabled
+               tipsMinLabel.topAnchor.constraint(equalTo: tipsEnabledLabel.bottomAnchor, constant: 10),
+               tipsMinLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+               tipsMinLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+               tipsMinLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+
+               // Tips Max label below Tips Min
+               tipsMaxLabel.topAnchor.constraint(equalTo: tipsMinLabel.bottomAnchor, constant: 10),
+               tipsMaxLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+               tipsMaxLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+               tipsMaxLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor),
+
+               // Can Earn label below Tips Max
+               canEarnLabel.topAnchor.constraint(equalTo: tipsMaxLabel.bottomAnchor, constant: 10),
+               canEarnLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+               canEarnLabel.widthAnchor.constraint(equalTo: nameLabel.widthAnchor),
+               canEarnLabel.heightAnchor.constraint(equalTo: nameLabel.heightAnchor)
         ])
     }
 
@@ -212,6 +268,12 @@ class ViewController: UIViewController {
                     self.isVerified = firstProfile.isVerified
                     self.canPayInternal = firstProfile.canPayInternal
 
+                    // New properties
+                    self.tipsEnabled = firstProfile.tipsEnabled
+                    self.tipsMin = firstProfile.tipsMin
+                    self.tipsMax = firstProfile.tipsMax
+                    self.canEarn = firstProfile.canEarn
+
                     // Print the fetched data
                     print("Name: \(self.name)")
                     print("Username: \(self.username)")
@@ -223,6 +285,10 @@ class ViewController: UIViewController {
                     print("Has Not Viewed Story: \(self.hasNotViewedStory)")
                     print("Is Verified: \(self.isVerified)")
                     print("Can Pay Internal: \(self.canPayInternal)")
+                    print("Tips Enabled: \(self.tipsEnabled)")
+                    print("Tips Min: \(self.tipsMin)")
+                    print("Tips Max: \(self.tipsMax)")
+                    print("Can Earn: \(self.canEarn)")
 
                     // Update UI elements with the new values
                     DispatchQueue.main.async {
@@ -236,6 +302,10 @@ class ViewController: UIViewController {
                         self.hasNotViewedStoryLabel.text = "Has Not Viewed Story: \(self.hasNotViewedStory)"
                         self.isVerifiedLabel.text = "Is Verified: \(self.isVerified)"
                         self.canPayInternalLabel.text = "Can Pay Internal: \(self.canPayInternal)"
+                        self.tipsEnabledLabel.text = "Tips Enabled: \(self.tipsEnabled)"
+                        self.tipsMinLabel.text = "Tips Min: \(self.tipsMin)"
+                        self.tipsMaxLabel.text = "Tips Max: \(self.tipsMax)"
+                        self.canEarnLabel.text = "Can Earn: \(self.canEarn)"
                     }
                 }
 
@@ -243,6 +313,7 @@ class ViewController: UIViewController {
                 print("Error fetching OnlyFans profiles: \(error)")
             }
         }
+    
     }
 
     private static func createBorderedLabel() -> UILabel {
