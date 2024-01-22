@@ -69,21 +69,37 @@ class SelectOptionViewController: UIViewController {
     }
 
     @objc private func buttonTapped(sender: UIButton) {
-        switch sender.title(for: .normal) {
-        case "Message Model":
-            // Handle Message Model button tap
-            print("Message Model button tapped!")
-        case "Call Model":
-            // Handle Call Model button tap
-            print("Call Model button tapped!")
-        case "Model Data":
-            // Handle Model Data button tap
-            print("Model Data button tapped!")
-        case "Schedule Dates":
-            // Handle Schedule Dates button tap
-            print("Schedule Dates button tapped!")
-        default:
-            break
-        }
-    }
+          switch sender.title(for: .normal) {
+          case "Message Model":
+              // Handle Message Model button tap
+              print("Message Model button tapped!")
+              let phoneNumber = "sms://2123468423"
+              if let url = URL(string: phoneNumber) {
+                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+              }
+          case "Call Model":
+              // Handle Call Model button tap
+              print("Call Model button tapped!")
+              let phoneNumber = "tel://2123468423"
+              if let url = URL(string: phoneNumber) {
+                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
+              }
+          case "Model Data":
+              // Handle Model Data button tap
+              print("Model Data button tapped!")
+
+              // Create an instance of DataViewController
+              let dataViewController = DataViewController()
+
+              // Push DataViewController onto the navigation stack
+              navigationController?.pushViewController(dataViewController, animated: true)
+          case "Schedule Dates":
+              // Handle Schedule Dates button tap
+              print("Schedule Dates button tapped!")
+          default:
+              break
+          }
+      }
+
+
 }
