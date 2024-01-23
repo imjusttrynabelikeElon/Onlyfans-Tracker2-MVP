@@ -35,10 +35,11 @@ class AvatarCell: UICollectionViewCell {
         NSLayoutConstraint.activate([
             avatarImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             avatarImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            avatarImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            avatarImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor)
+            avatarImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 0.8), // Adjust the multiplier to your desired size
+            avatarImageView.heightAnchor.constraint(equalTo: contentView.heightAnchor, multiplier: 0.8) // Adjust the multiplier to your desired size
         ])
     }
+
 
     func configure(with avatarURL: URL) {
         avatarImageView.sd_setImage(with: avatarURL, completed: nil)
@@ -54,6 +55,7 @@ class NavSelectorViewController: UICollectionViewController {
         collectionView.backgroundColor = .white
         collectionView.register(AvatarCell.self, forCellWithReuseIdentifier: AvatarCell.reuseIdentifier)
         collectionView.dataSource = self
+        title = "Your Clients"
         
         
     }

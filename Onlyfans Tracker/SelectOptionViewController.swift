@@ -7,6 +7,9 @@
 
 import UIKit
 
+import UIKit
+import EventKit
+
 class SelectOptionViewController: UIViewController {
 
     override func viewDidLoad() {
@@ -20,7 +23,7 @@ class SelectOptionViewController: UIViewController {
         let messageModelButton = createButton(withTitle: "Message Model")
         let callModelButton = createButton(withTitle: "Call Model")
         let modelDataButton = createButton(withTitle: "Model Data")
-        let scheduleDatesButton = createButton(withTitle: "Schedule Dates")
+        let remindersButton = createButton(withTitle: "Reminders")
 
         // StackView for vertical alignment
         let verticalStackView1 = UIStackView(arrangedSubviews: [messageModelButton, callModelButton])
@@ -28,7 +31,7 @@ class SelectOptionViewController: UIViewController {
         verticalStackView1.distribution = .fillEqually
         verticalStackView1.spacing = 420.0
 
-        let verticalStackView2 = UIStackView(arrangedSubviews: [modelDataButton, scheduleDatesButton])
+        let verticalStackView2 = UIStackView(arrangedSubviews: [modelDataButton, remindersButton])
         verticalStackView2.axis = .vertical
         verticalStackView2.distribution = .fillEqually
         verticalStackView2.spacing = 420.0
@@ -69,37 +72,64 @@ class SelectOptionViewController: UIViewController {
     }
 
     @objc private func buttonTapped(sender: UIButton) {
-          switch sender.title(for: .normal) {
-          case "Message Model":
-              // Handle Message Model button tap
-              print("Message Model button tapped!")
-              let phoneNumber = "sms://2123468423"
-              if let url = URL(string: phoneNumber) {
-                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
-              }
-          case "Call Model":
-              // Handle Call Model button tap
-              print("Call Model button tapped!")
-              let phoneNumber = "tel://2123468423"
-              if let url = URL(string: phoneNumber) {
-                  UIApplication.shared.open(url, options: [:], completionHandler: nil)
-              }
-          case "Model Data":
-              // Handle Model Data button tap
-              print("Model Data button tapped!")
+        switch sender.title(for: .normal) {
+        case "Message Model":
+            // Handle Message Model button tap
+            print("Message Model button tapped!")
+            let phoneNumber = "sms://2123468423"
+            if let url = URL(string: phoneNumber) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        case "Call Model":
+            // Handle Call Model button tap
+            print("Call Model button tapped!")
+            let phoneNumber = "tel://2123468423"
+            if let url = URL(string: phoneNumber) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+        case "Model Data":
+            // Handle Model Data button tap
+            print("Model Data button tapped!")
 
-              // Create an instance of DataViewController
-              let dataViewController = DataViewController()
+            // Create an instance of DataViewController
+            let dataViewController = DataViewController()
 
-              // Push DataViewController onto the navigation stack
-              navigationController?.pushViewController(dataViewController, animated: true)
-          case "Schedule Dates":
-              // Handle Schedule Dates button tap
-              print("Schedule Dates button tapped!")
-          default:
-              break
-          }
-      }
+            // Push DataViewController onto the navigation stack
+            navigationController?.pushViewController(dataViewController, animated: true)
+        case "Reminders":
+            // Handle Reminders button tap
+            print("Reminders button tapped!")
+
+            // Create an instance of ReminderViewViewController
+            let reminderViewViewController = ReminderViewViewController()
+
+            // Push ReminderViewViewController onto the navigation stack
+            navigationController?.pushViewController(reminderViewViewController, animated: true)
+
+        default:
+            break
+        }
+    }
 
 
+    private func createReminder() {
+        let eventStore = EKEventStore()
+
+        eventStore.requestAccess(to: .reminder) { (granted, error) in
+            if granted && error == nil {
+                let reminder = EKReminder(eventStore: eventStore)
+                reminder.title = "Sample Reminder"
+                reminder.calendar = eventStore.defaultCalendarForNewReminders()
+
+                do {
+                    try eventStore.save(reminder, commit: true)
+                    print("Reminder created successfully.")
+                } catch {
+                    print("Error creating reminder: \(error.localizedDescription)")
+                }
+            } else {
+                print("Access to reminders not granted.")
+            }
+        }
+    }
 }
