@@ -17,8 +17,11 @@ class SelectOptionViewController: UIViewController {
         view.backgroundColor = .white
         title = "Pick Option"
         setupButtons()
+
+
     }
 
+    
     private func setupButtons() {
         let messageModelButton = createButton(withTitle: "Message Model")
         let callModelButton = createButton(withTitle: "Call Model")
@@ -100,17 +103,15 @@ class SelectOptionViewController: UIViewController {
             // Handle Reminders button tap
             print("Reminders button tapped!")
 
-            // Create an instance of ReminderViewViewController
-            let reminderViewViewController = ReminderViewViewController()
-
-            // Push ReminderViewViewController onto the navigation stack
-            navigationController?.pushViewController(reminderViewViewController, animated: true)
+            // Open the Reminders app
+            if let remindersURL = URL(string: "x-apple-reminderkit://"), UIApplication.shared.canOpenURL(remindersURL) {
+                UIApplication.shared.open(remindersURL, options: [:], completionHandler: nil)
+            }
 
         default:
             break
         }
     }
-
 
     private func createReminder() {
         let eventStore = EKEventStore()
