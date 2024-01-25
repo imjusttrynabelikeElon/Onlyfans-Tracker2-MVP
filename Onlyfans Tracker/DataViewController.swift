@@ -210,7 +210,8 @@ class DataViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         fetchAndPrintOnlyFansData()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
+        title = "Model OF Data"
     }
     func setupUI() {
         // Add UI elements to the scroll view
@@ -248,6 +249,8 @@ class DataViewController: UIViewController {
 
         // Add scroll view to the main view
         view.addSubview(scrollView)
+        
+        
 
         // Set up constraints for scroll view
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -583,8 +586,8 @@ class DataViewController: UIViewController {
     private static func createBorderedLabel() -> UILabel {
         let label = UILabel()
         label.textAlignment = .center // Set text alignment to center
-        label.textColor = .black
-        label.layer.borderColor = UIColor.black.cgColor
+        label.textColor = .systemPink
+        label.layer.borderColor = UIColor.systemPink.cgColor
         label.layer.borderWidth = 1.0
         label.layer.cornerRadius = 8.0
         label.clipsToBounds = true
