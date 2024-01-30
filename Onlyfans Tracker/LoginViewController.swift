@@ -1,27 +1,18 @@
 //
-//  SignUPViewController.swift
+//  LoginViewController.swift
 //  Onlyfans Tracker
 //
-//  Created by Karon Bell on 1/22/24.
+//  Created by Karon Bell on 1/30/24.
 //
-
 
 import UIKit
 import Firebase
 
-class SignUpViewController: UIViewController {
+class LoginViewController: UIViewController {
 
     let usernameTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Username"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-
-    let emailTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Email"
+        textField.placeholder = "Username or Email"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -38,14 +29,14 @@ class SignUpViewController: UIViewController {
 
     let signUpButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Sign Up", for: .normal)
+        button.setTitle("Login", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
 
-    let signInButton: UIButton = {
+    let createAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Sign In", for: .normal)
+        button.setTitle("Create Account", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,17 +44,17 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        title = "Create Account"
+        title = "Login"
         setupUI()
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        createAccountButton.addTarget(self, action: #selector(createAccountButtonTapped), for: .touchUpInside)
     }
 
     func setupUI() {
         view.addSubview(usernameTextField)
-        view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signUpButton)
-        view.addSubview(signInButton)
+        view.addSubview(createAccountButton)
 
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -71,30 +62,29 @@ class SignUpViewController: UIViewController {
             usernameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             usernameTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            emailTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
-            emailTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            emailTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            emailTextField.heightAnchor.constraint(equalToConstant: 40),
-
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 20),
+            passwordTextField.topAnchor.constraint(equalTo: usernameTextField.bottomAnchor, constant: 20),
             passwordTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             passwordTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
 
             signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
             signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1),
-            signUpButton.trailingAnchor.constraint(equalTo: signInButton.leadingAnchor, constant: -10),
+            signUpButton.trailingAnchor.constraint(equalTo: createAccountButton.leadingAnchor, constant: -10),
             signUpButton.heightAnchor.constraint(equalToConstant: 40),
 
-            signInButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            signInButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
-            signInButton.widthAnchor.constraint(equalTo: signUpButton.widthAnchor),
-            signInButton.heightAnchor.constraint(equalToConstant: 40),
+            createAccountButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
+            createAccountButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
+            createAccountButton.widthAnchor.constraint(equalTo: signUpButton.widthAnchor),
+            createAccountButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
 
     @objc func signUpButtonTapped() {
         // Handle sign-up button tapped
+    }
+
+    @objc func createAccountButtonTapped() {
+        // Handle create account button tapped
     }
 
     // Rest of the code remains unchanged...
