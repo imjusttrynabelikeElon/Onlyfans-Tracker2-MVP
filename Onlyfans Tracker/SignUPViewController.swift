@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import FirebaseDatabase
 
 class SignUpViewController: UIViewController {
 
@@ -120,19 +121,56 @@ class SignUpViewController: UIViewController {
         }
 
         // If the email is valid, perform password validation
-        if isValidEmail(email) {
-            guard password.count >= 5,
-                  password.rangeOfCharacter(from: .uppercaseLetters) != nil,
-                  password.rangeOfCharacter(from: .decimalDigits) != nil else {
-                // Display an error message or alert indicating that the password is invalid
-                showAlerttt(message: "Password must contain at least 5 characters, including at least one capital letter and one digit.")
-                return
-            }
+        guard password.count >= 5,
+              password.rangeOfCharacter(from: .uppercaseLetters) != nil,
+              password.rangeOfCharacter(from: .decimalDigits) != nil else {
+            // Display an error message or alert indicating that the password is invalid
+            showAlerttt(message: "Password must contain at least 5 characters, including at least one capital letter and one digit.")
+            return
         }
 
-        // If all checks pass, proceed with user registration
-        signUp()
+        // If all checks pass, proceed with user registration in Firebase
+        signUp(username: username, email: email, password: password)
     }
+
+    func signUp(username: String, email: String, password: String) {
+        Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
+            guard let self = self else { return }
+
+            if let error = error {
+                // Handle error during authentication
+                print("Error creating user: \(error.localizedDescription)")
+                self.showAlertt(message: "Error creating user. Please try again.")
+                return
+            }
+
+            // Authentication successful
+            if let uid = authResult?.user.uid {
+                // Create a reference to the Firebase database
+                let databaseRef = Database.database().reference().child("users").child(uid)
+
+                // Save additional user data to the database
+                let userData: [String: Any] = ["username": username, "email": email, "password": password]
+
+                // You can add more fields to the userData dictionary as needed
+                // ...
+
+                // Save user data under a node named with the user's UID
+                databaseRef.setValue(userData)
+
+                // Print user details
+                print("User successfully registered and authenticated.")
+                print("User ID: \(uid)")
+                print("Username: \(username)")
+                print("Email: \(email)")
+                print("Password: \(password)")
+                
+            }
+        }
+    }
+
+
+  
 
     // ... rest of the code remains unchanged
 
@@ -162,9 +200,5 @@ class SignUpViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 
-    func signUp() {
-        // Continue with the user registration logic as before
-        // ...
-    }
-
+    
 }
