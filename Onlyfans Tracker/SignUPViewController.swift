@@ -56,6 +56,8 @@ class SignUpViewController: UIViewController {
         title = "Create Account"
         setupUI()
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
+        
+        signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
     }
 
     func setupUI() {
@@ -94,8 +96,75 @@ class SignUpViewController: UIViewController {
     }
 
     @objc func signUpButtonTapped() {
-        // Handle sign-up button tapped
+        // Check if all text fields are filled
+        guard let username = usernameTextField.text,
+              let email = emailTextField.text, !email.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            // Display an error message or alert indicating that all fields must be filled
+            showAlertt(message: "Please fill in all fields.")
+            return
+        }
+
+        // Check if the username is at least 5 characters long
+        guard username.count >= 5 else {
+            // Display an error message or alert indicating that the username must be at least 5 characters
+            showAlertt(message: "Username must be at least 5 characters.")
+            return
+        }
+
+        // Check if the email is valid
+        guard isValidEmail(email) else {
+            // Display an error message or alert indicating that the email is invalid
+            showAlertt(message: "Invalid email format. Please use a valid Gmail address.")
+            return
+        }
+
+        // If the email is valid, perform password validation
+        if isValidEmail(email) {
+            guard password.count >= 5,
+                  password.rangeOfCharacter(from: .uppercaseLetters) != nil,
+                  password.rangeOfCharacter(from: .decimalDigits) != nil else {
+                // Display an error message or alert indicating that the password is invalid
+                showAlerttt(message: "Password must contain at least 5 characters, including at least one capital letter and one digit.")
+                return
+            }
+        }
+
+        // If all checks pass, proceed with user registration
+        signUp()
     }
 
-    // Rest of the code remains unchanged...
+    // ... rest of the code remains unchanged
+
+
+    func showAlertt(message: String) {
+        let alert = UIAlertController(title: "Invalid", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
+
+    @objc func signInButtonTapped() {
+        let loginViewController = LoginViewController() // Instantiate your LoginViewController
+        navigationController?.pushViewController(loginViewController, animated: true)
+    }
+
+
+    func isValidEmail(_ email: String) -> Bool {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@gmail.com" // Adjust the pattern as needed
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
+    }
+
+    func showAlerttt(message: String) {
+        let alert = UIAlertController(title: "Invalid Password", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
+    func signUp() {
+        // Continue with the user registration logic as before
+        // ...
+    }
+
 }

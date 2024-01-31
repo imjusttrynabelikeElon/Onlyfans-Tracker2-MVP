@@ -54,7 +54,6 @@ class LoginViewController: UIViewController {
         view.addSubview(usernameTextField)
         view.addSubview(passwordTextField)
         view.addSubview(signUpButton)
-        view.addSubview(createAccountButton)
 
         NSLayoutConstraint.activate([
             usernameTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
@@ -68,16 +67,12 @@ class LoginViewController: UIViewController {
             passwordTextField.heightAnchor.constraint(equalToConstant: 40),
 
             signUpButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            signUpButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 1),
-            signUpButton.trailingAnchor.constraint(equalTo: createAccountButton.leadingAnchor, constant: -10),
+            signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor), // Center horizontally
+            signUpButton.widthAnchor.constraint(equalToConstant: 200), // Set a fixed width
             signUpButton.heightAnchor.constraint(equalToConstant: 40),
-
-            createAccountButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 20),
-            createAccountButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -1),
-            createAccountButton.widthAnchor.constraint(equalTo: signUpButton.widthAnchor),
-            createAccountButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
+
 
     @objc func signUpButtonTapped() {
         // Handle sign-up button tapped
