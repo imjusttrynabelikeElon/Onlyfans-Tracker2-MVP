@@ -26,6 +26,8 @@ class ModelCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupImageView()
+        
+        imageView.isUserInteractionEnabled = true
     }
 
     required init?(coder: NSCoder) {

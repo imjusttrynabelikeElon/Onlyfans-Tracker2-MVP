@@ -16,23 +16,28 @@ class SelectOptionViewController: UIViewController {
         title = "Pick Option"
         setupButtons()
     }
+    
+    var selectedModel: Model?
 
     private func setupButtons() {
         let messageModelButton = createButton(withTitle: "Message Model", action: #selector(messageModelTapped))
         let callModelButton = createButton(withTitle: "Call Model", action: #selector(callModelTapped))
         let modelDataButton = createButton(withTitle: "Model Data", action: #selector(modelDataTapped))
         let remindersButton = createButton(withTitle: "Reminders", action: #selector(remindersTapped))
+        let instagramButton = createButton(withTitle: "Model's Instagram", action: #selector(instagramTapped))
+        let twitterButton = createButton(withTitle: "Model's Twitter", action: #selector(twitterTapped))
+        let onlyFansButton = createButton(withTitle: "Model's OF", action: #selector(onlyFansTapped))
 
         // StackView for vertical alignment
         let verticalStackView1 = UIStackView(arrangedSubviews: [messageModelButton, callModelButton])
         verticalStackView1.axis = .vertical
         verticalStackView1.distribution = .fillEqually
-        verticalStackView1.spacing = 20.0
+        verticalStackView1.spacing = 40.0
 
         let verticalStackView2 = UIStackView(arrangedSubviews: [modelDataButton, remindersButton])
         verticalStackView2.axis = .vertical
         verticalStackView2.distribution = .fillEqually
-        verticalStackView2.spacing = 20.0
+        verticalStackView2.spacing = 40.0
 
         // StackView for horizontal alignment
         let horizontalStackView = UIStackView(arrangedSubviews: [verticalStackView1, verticalStackView2])
@@ -48,9 +53,54 @@ class SelectOptionViewController: UIViewController {
             horizontalStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20.0),
             horizontalStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20.0),
             horizontalStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20.0),
-            horizontalStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20.0)
+        ])
+
+        // StackView for vertical alignment below horizontalStackView
+        let verticalStackView3 = UIStackView(arrangedSubviews: [instagramButton, twitterButton, onlyFansButton])
+        verticalStackView3.axis = .vertical
+        verticalStackView3.distribution = .fillEqually
+        verticalStackView3.spacing = 40.0
+
+        view.addSubview(verticalStackView3)
+
+        // Add constraints for verticalStackView3 below horizontalStackView
+        verticalStackView3.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            verticalStackView3.leadingAnchor.constraint(equalTo: horizontalStackView.leadingAnchor),
+            verticalStackView3.trailingAnchor.constraint(equalTo: horizontalStackView.trailingAnchor),
+            verticalStackView3.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: 80.0),
+            verticalStackView3.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50.0)
         ])
     }
+
+
+    @objc private func instagramTapped() {
+           print("Model's Instagram button tapped!")
+           // Replace "model_instagram_username" with the actual Instagram username of the model
+           let instagramURL = URL(string: "https://www.instagram.com/model_instagram_username/")
+           if let url = instagramURL, UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.open(url, options: [:], completionHandler: nil)
+           }
+       }
+
+       @objc private func twitterTapped() {
+           print("Model's Twitter button tapped!")
+           // Replace "model_twitter_username" with the actual Twitter username of the model
+           let twitterURL = URL(string: "https://twitter.com/model_twitter_username/")
+           if let url = twitterURL, UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.open(url, options: [:], completionHandler: nil)
+           }
+       }
+
+       @objc private func onlyFansTapped() {
+           print("Model's OnlyFans button tapped!")
+           // Replace "model_onlyfans_username" with the actual OnlyFans username or link of the model
+           let onlyFansURL = URL(string: "https://onlyfans.com/model_onlyfans_username/")
+           if let url = onlyFansURL, UIApplication.shared.canOpenURL(url) {
+               UIApplication.shared.open(url, options: [:], completionHandler: nil)
+           }
+       }
+   
 
     private func createButton(withTitle title: String, action: Selector) -> UIButton {
         let button = UIButton()

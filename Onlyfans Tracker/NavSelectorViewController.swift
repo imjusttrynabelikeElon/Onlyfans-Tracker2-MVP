@@ -47,6 +47,8 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
            title = "Tap On One Of Your Models"
 
            // ... (your existing code)
+        
+      
 
         // Create a layout for the collection view
               let layout = UICollectionViewFlowLayout()
@@ -170,4 +172,30 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         // Push the SelectOptionViewController onto the navigation stack
         navigationController?.pushViewController(selectOptionViewController, animated: true)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           // Handle tap on a collection view cell
+           print("Image tapped at index: \(indexPath.item)")
+
+           // Add blink animation to the selected cell
+           if let cell = collectionView.cellForItem(at: indexPath) as? ModelCell {
+               UIView.animate(withDuration: 0.1, animations: {
+                   cell.imageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+               }) { _ in
+                   UIView.animate(withDuration: 0.1) {
+                       cell.imageView.transform = .identity
+                   }
+               }
+           }
+
+           // Create an instance of SelectOptionViewController
+           let selectOptionViewController = SelectOptionViewController()
+
+           // Pass the selected model data to the next view controller as needed
+           let selectedModel = modelData[indexPath.item]
+           selectOptionViewController.selectedModel = selectedModel
+
+           // Push the SelectOptionViewController onto the navigation stack
+           navigationController?.pushViewController(selectOptionViewController, animated: true)
+       }
 }
