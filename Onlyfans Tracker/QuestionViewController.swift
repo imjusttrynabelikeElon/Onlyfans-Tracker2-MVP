@@ -30,12 +30,12 @@ class QuestionViewController: UIViewController, UITextFieldDelegate, QuestionVie
         label.translatesAutoresizingMaskIntoConstraints = false
 
         let managerButton = UIButton(type: .system)
-        managerButton.setTitle("Manager", for: .normal)
+        managerButton.setTitle("Model", for: .normal)
         managerButton.addTarget(self, action: #selector(managerButtonTapped), for: .touchUpInside)
         managerButton.translatesAutoresizingMaskIntoConstraints = false
 
         let modelButton = UIButton(type: .system)
-        modelButton.setTitle("Model", for: .normal)
+        modelButton.setTitle("Manager", for: .normal)
         modelButton.addTarget(self, action: #selector(modelButtonTapped), for: .touchUpInside)
         modelButton.translatesAutoresizingMaskIntoConstraints = false
 

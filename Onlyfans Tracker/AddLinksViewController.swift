@@ -158,8 +158,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate {
         // Enable the Next button if all required text fields are filled
         nextButton.isEnabled = !instagramTextField.text!.isEmpty &&
                                      isValidEmail(email: gmailTextField.text) &&
-                                     !phoneNumberTextField.text!.isEmpty &&
-                                     isValidLink(link: twitterTextField.text)
+                                     !phoneNumberTextField.text!.isEmpty 
     }
 
     // MARK: - UITextFieldDelegate

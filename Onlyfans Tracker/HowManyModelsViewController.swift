@@ -61,10 +61,14 @@ class HowManyModelsViewController: UIViewController, UIPickerViewDelegate, UIPic
     }
 
     @objc private func confirmButtonTapped() {
-        guard let selectedOption = selectedOption else { return }
-        delegate?.didSelectOption(selectedOption)
-    }
+          guard let selectedOption = selectedOption,
+                let numberOfModels = Int(selectedOption) else { return }
 
+          // Present AddModelLinksViewController for the specified number of models
+          let addModelLinksVC = AddModelLinksViewController(numberOfModels: numberOfModels)
+          navigationController?.pushViewController(addModelLinksVC, animated: true)
+      }
+    
     // MARK: - UIPickerViewDelegate and UIPickerViewDataSource
 
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
