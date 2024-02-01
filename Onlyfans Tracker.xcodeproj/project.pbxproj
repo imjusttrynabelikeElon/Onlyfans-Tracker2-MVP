@@ -16,6 +16,10 @@
 		C922E28C2B6AAC3B00B7B52F /* FirebaseInAppMessagingSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = C922E28B2B6AAC3B00B7B52F /* FirebaseInAppMessagingSwift-Beta */; };
 		C922E28E2B6AAC3B00B7B52F /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = C922E28D2B6AAC3B00B7B52F /* FirebaseMessaging */; };
 		C922E2902B6AAC3B00B7B52F /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = C922E28F2B6AAC3B00B7B52F /* FirebaseStorage */; };
+		C922E2922B6AC53C00B7B52F /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C922E2912B6AC53C00B7B52F /* OnboardingViewController.swift */; };
+		C922E2942B6AC68F00B7B52F /* QuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C922E2932B6AC68F00B7B52F /* QuestionViewController.swift */; };
+		C92BA8162B6B320000511CBD /* ManagerNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BA8152B6B320000511CBD /* ManagerNameViewController.swift */; };
+		C92BA8182B6B327C00511CBD /* HowManyModelsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C92BA8172B6B327C00511CBD /* HowManyModelsViewController.swift */; };
 		C939F0B82B5DC04400EAC39F /* OFAPICALLER.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939F0B72B5DC04400EAC39F /* OFAPICALLER.swift */; };
 		C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */ = {isa = PBXBuildFile; fileRef = C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */; };
 		C9441CF82B5F135D00C682E7 /* ReminderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9441CF72B5F135D00C682E7 /* ReminderViewController.swift */; };
@@ -30,6 +34,7 @@
 		C98614892B67F3F0001D124A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C98614882B67F3F0001D124A /* SDWebImage */; };
 		C986148B2B67F3F0001D124A /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C986148A2B67F3F0001D124A /* SDWebImageMapKit */; };
 		C9BA17402B69947700195804 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BA173F2B69947700195804 /* LoginViewController.swift */; };
+		C9D0419C2B6B1E5100BF09F5 /* AddLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */; };
 		C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */; };
 		C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */; };
 		C9FB4DA32B5D9DB6001D962A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA22B5D9DB6001D962A /* ViewController.swift */; };
@@ -40,6 +45,10 @@
 
 /* Begin PBXFileReference section */
 		C902BE842B6864DF0004FA7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C922E2912B6AC53C00B7B52F /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		C922E2932B6AC68F00B7B52F /* QuestionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuestionViewController.swift; sourceTree = "<group>"; };
+		C92BA8152B6B320000511CBD /* ManagerNameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerNameViewController.swift; sourceTree = "<group>"; };
+		C92BA8172B6B327C00511CBD /* HowManyModelsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowManyModelsViewController.swift; sourceTree = "<group>"; };
 		C939F0B72B5DC04400EAC39F /* OFAPICALLER.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFAPICALLER.swift; sourceTree = "<group>"; };
 		C939F0B92B5DC2E400EAC39F /* OFMODELDATA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OFMODELDATA.swift; sourceTree = "<group>"; };
 		C9441CF72B5F135D00C682E7 /* ReminderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +61,7 @@
 		C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSelectorViewController.swift; sourceTree = "<group>"; };
 		C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectOptionViewController.swift; sourceTree = "<group>"; };
 		C9BA173F2B69947700195804 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLinksViewController.swift; sourceTree = "<group>"; };
 		C9FB4D9B2B5D9DB6001D962A /* Onlyfans Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Onlyfans Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +122,11 @@
 				C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */,
 				C9441CF92B5F18CF00C682E7 /* ReminderViewViewController.swift */,
 				C9441CFF2B5F45D500C682E7 /* allViewController.swift */,
+				C922E2912B6AC53C00B7B52F /* OnboardingViewController.swift */,
+				C922E2932B6AC68F00B7B52F /* QuestionViewController.swift */,
+				C92BA8172B6B327C00511CBD /* HowManyModelsViewController.swift */,
+				C92BA8152B6B320000511CBD /* ManagerNameViewController.swift */,
+				C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */,
 				C9441CFD2B5F45AD00C682E7 /* todayViewController.swift */,
 				C9441CFB2B5F459900C682E7 /* scheduledViewController.swift */,
 				C9BA173F2B69947700195804 /* LoginViewController.swift */,
@@ -214,17 +229,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9D0419C2B6B1E5100BF09F5 /* AddLinksViewController.swift in Sources */,
 				C9441D002B5F45D500C682E7 /* allViewController.swift in Sources */,
 				C9441CFC2B5F459900C682E7 /* scheduledViewController.swift in Sources */,
 				C9FB4DA32B5D9DB6001D962A /* ViewController.swift in Sources */,
 				C9BA17402B69947700195804 /* LoginViewController.swift in Sources */,
 				C9441CFE2B5F45AD00C682E7 /* todayViewController.swift in Sources */,
+				C92BA8182B6B327C00511CBD /* HowManyModelsViewController.swift in Sources */,
 				C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */,
 				C9441CF82B5F135D00C682E7 /* ReminderViewController.swift in Sources */,
 				C939F0B82B5DC04400EAC39F /* OFAPICALLER.swift in Sources */,
+				C922E2942B6AC68F00B7B52F /* QuestionViewController.swift in Sources */,
 				C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */,
 				C978887E2B5ED0B800F00409 /* SignUPViewController.swift in Sources */,
 				C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */,
+				C922E2922B6AC53C00B7B52F /* OnboardingViewController.swift in Sources */,
+				C92BA8162B6B320000511CBD /* ManagerNameViewController.swift in Sources */,
 				C9441CFA2B5F18CF00C682E7 /* ReminderViewViewController.swift in Sources */,
 				C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */,
 				C97888852B5EE21D00F00409 /* SelectOptionViewController.swift in Sources */,

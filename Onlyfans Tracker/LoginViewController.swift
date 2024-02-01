@@ -78,7 +78,7 @@ class LoginViewController: UIViewController {
     @objc func loginButtonTapped() {
         guard let usernameOrEmail = usernameTextField.text,
               let password = passwordTextField.text, !usernameOrEmail.isEmpty, !password.isEmpty else {
-            showAlert(message: "Please enter both username/email and password.")
+            showAlert(message: "Please enter both username/email and password correctly.")
             return
         }
 
