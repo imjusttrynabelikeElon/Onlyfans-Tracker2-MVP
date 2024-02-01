@@ -26,6 +26,7 @@ class HowManyModelsViewController: UIViewController, UIPickerViewDelegate, UIPic
 
     private var options: [String] = []
     private var selectedOption: String?
+    private var modelImageViews: [UIImageView] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,8 @@ class HowManyModelsViewController: UIViewController, UIPickerViewDelegate, UIPic
         
         options = (1...50).map { "\($0)" }
         options.append("50+")
+        
+        
 
         view.addSubview(pickerView)
         view.addSubview(confirmButton)

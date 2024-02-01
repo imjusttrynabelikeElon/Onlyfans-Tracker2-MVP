@@ -164,7 +164,10 @@ class SignUpViewController: UIViewController {
                 print("Username: \(username)")
                 print("Email: \(email)")
                 print("Password: \(password)")
-                
+
+                // After successful signup, navigate to the OnboardingViewController
+                let onboardingViewController = OnboardingViewController()
+                self.navigationController?.pushViewController(onboardingViewController, animated: true)
             }
         }
     }

@@ -8,13 +8,13 @@
 import UIKit
 import Foundation
 
-class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
+class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     private var currentModel: Int = 1 // The current model being added
     private var totalModels: Int // Total number of models to add
     
     
     // Array to store model data (links and phone numbers)
-       private var modelData: [[String: String]] = []
+    private var modelData: [Model] = []
 
     
     let onlyFansLinkTextField: UITextField = {
@@ -66,6 +66,33 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    let imagePickerButton: UIButton = {
+          let button = UIButton(type: .system)
+          button.setImage(UIImage(systemName: "photo"), for: .normal)
+          button.tintColor = .systemBlue
+          button.translatesAutoresizingMaskIntoConstraints = false
+          return button
+      }()
+    
+    let modelImageView: UIImageView = {
+         let imageView = UIImageView()
+         imageView.backgroundColor = .lightGray
+         imageView.contentMode = .scaleAspectFit
+         imageView.translatesAutoresizingMaskIntoConstraints = false
+         return imageView
+     }()
+    let imagePlaceholderLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Tap Blue Button To Place Picture of your model inside"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold) // Set the desired weight (e.g., .bold)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
+
+
+    
     init(numberOfModels: Int) {
         self.totalModels = numberOfModels
         super.init(nibName: nil, bundle: nil)
@@ -90,15 +117,31 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(twitterTextField)
         view.addSubview(nextButton)
         view.addSubview(onlyFansLinkTextField)
+        view.addSubview(imagePickerButton)
+        view.addSubview(modelImageView)
+        view.addSubview(imagePlaceholderLabel)
 
         NSLayoutConstraint.activate([
-            
-            onlyFansLinkTextField.topAnchor.constraint(equalTo: twitterTextField.bottomAnchor, constant: 20),
-                       onlyFansLinkTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-                       onlyFansLinkTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-                       onlyFansLinkTextField.heightAnchor.constraint(equalToConstant: 40),
-            
-            instagramTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: view.bounds.height * 0.3),
+            imagePlaceholderLabel.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -220),
+            imagePlaceholderLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            imagePickerButton.topAnchor.constraint(equalTo: imagePlaceholderLabel.bottomAnchor, constant: 10),
+
+            imagePickerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imagePickerButton.widthAnchor.constraint(equalToConstant: 30),
+            imagePickerButton.heightAnchor.constraint(equalToConstant: 30),
+
+            modelImageView.topAnchor.constraint(equalTo: imagePickerButton.bottomAnchor, constant: 20),
+            modelImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            modelImageView.widthAnchor.constraint(equalToConstant: 100),
+            modelImageView.heightAnchor.constraint(equalToConstant: 100),
+
+            onlyFansLinkTextField.topAnchor.constraint(equalTo: modelImageView.bottomAnchor, constant: 20),
+            onlyFansLinkTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            onlyFansLinkTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            onlyFansLinkTextField.heightAnchor.constraint(equalToConstant: 40),
+
+            instagramTextField.topAnchor.constraint(equalTo: onlyFansLinkTextField.bottomAnchor, constant: 20),
             instagramTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             instagramTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             instagramTextField.heightAnchor.constraint(equalToConstant: 40),
@@ -118,11 +161,12 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
             twitterTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             twitterTextField.heightAnchor.constraint(equalToConstant: 40),
 
-            nextButton.topAnchor.constraint(equalTo: twitterTextField.bottomAnchor, constant: 85),
+            nextButton.topAnchor.constraint(equalTo: twitterTextField.bottomAnchor, constant: 50),
             nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             nextButton.heightAnchor.constraint(equalToConstant: 40),
             nextButton.widthAnchor.constraint(equalToConstant: 120),
         ])
+
 
         // Add target to handle text changes in text fields
         
@@ -134,6 +178,8 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
 
         nextButton.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
 
+        // ... (existing target actions and nextButton setup)
+            imagePickerButton.addTarget(self, action: #selector(imagePickerButtonTapped), for: .touchUpInside)
 
     }
     
@@ -166,22 +212,45 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
               isValidLink(link: onlyFansLinkTextField.text)
       }
     
+    
+    @objc private func imagePickerButtonTapped() {
+           // Present image picker
+           let imagePicker = UIImagePickerController()
+           imagePicker.delegate = self
+           imagePicker.sourceType = .photoLibrary
+           imagePicker.allowsEditing = false
+
+           present(imagePicker, animated: true)
+       }
+
+    
+  
+    
+    // Inside AddModelLinksViewController
     @objc private func nextButtonTapped() {
         // Save data for the current model and reset text fields
         saveDataForCurrentModel()
         resetTextFields()
-        
+
         // Move to the next model
         currentModel += 1
-        
+
         // Update the title based on the current model
         updateTitle()
-        
+
         if currentModel > totalModels {
-                  // Push back to OnboardingViewController
-                  navigationController?.popToRootViewController(animated: true)
-              }
+            // Print modelData for debugging
+            print("Model Data:")
+            for (index, model) in modelData.enumerated() {
+                print("Model \(index + 1) - Image: \(model.image != nil ? "Set" : "Not Set")")
+            }
+
+            // Push to NavSelectorViewController and pass the modelData
+            let navSelectorViewController = NavSelectorViewController(modelData: modelData)
+            navigationController?.pushViewController(navSelectorViewController, animated: true)
+        }
     }
+
     
     // Function to handle the "Finish" button tap
        @objc private func finishButtonTapped() {
@@ -193,32 +262,53 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate {
        }
 
     private func saveDataForCurrentModel() {
-         // Create a dictionary to store the data for the current model
-         var currentModelData: [String: String] = [:]
+        // Create a model instance for the current model
+        var currentModelData = Model(onlyFansLink: onlyFansLinkTextField.text)
+        // Add other properties to the model instance as needed
+        currentModelData.instagram = instagramTextField.text
+        currentModelData.email = gmailTextField.text
+        currentModelData.phoneNumber = phoneNumberTextField.text
+        currentModelData.twitter = twitterTextField.text
+        currentModelData.image = modelImageView.image // Save the image
+        
+        // Append the model instance to the modelData array
+        modelData.append(currentModelData)
+        
+        // Print the data for the current model
+        print("Model \(currentModel) Data:")
+        print("OnlyFansLink: \(currentModelData.onlyFansLink ?? "N/A")")
+        print("Instagram: \(currentModelData.instagram ?? "N/A")")
+        print("Email: \(currentModelData.email ?? "N/A")")
+        print("Phone Number: \(currentModelData.phoneNumber ?? "N/A")")
+        print("Twitter: \(currentModelData.twitter ?? "N/A")")
+        
+        // Print the image data if needed
+        if let imageData = currentModelData.image?.pngData() {
+            print("Image Data: \(imageData)")
+        } else {
+            print("No Image Data")
+        }
+        
+        // Reset text fields and remove the image for the next model
+        resetTextFields()
+        modelImageView.image = nil // Remove the image
+        
+        // Disable Next button until text fields are filled again
+        nextButton.isEnabled = false
+    }
 
-         // Add data to the dictionary
-         currentModelData["Instagram"] = instagramTextField.text
-         currentModelData["Email"] = gmailTextField.text
-         currentModelData["PhoneNumber"] = phoneNumberTextField.text
-         currentModelData["Twitter"] = twitterTextField.text
-        currentModelData["OnlyFansLink"] = onlyFansLinkTextField.text
 
 
-         // Append the dictionary to the modelData array
-         modelData.append(currentModelData)
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+           picker.dismiss(animated: true, completion: nil)
 
-         // Print the data for the current model
-         print("Model \(currentModel) Data:")
-         for (key, value) in currentModelData {
-             print("\(key): \(value ?? "N/A")")
-         }
+           guard let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else {
+               return
+           }
 
-         // Reset text fields for the next model
-         resetTextFields()
-
-         // Disable Next button until text fields are filled again
-         nextButton.isEnabled = false
-     }
+           modelImageView.image = pickedImage
+           imagePlaceholderLabel.isHidden = true
+       }
      
     private func resetTextFields() {
         // Reset text fields for the next model

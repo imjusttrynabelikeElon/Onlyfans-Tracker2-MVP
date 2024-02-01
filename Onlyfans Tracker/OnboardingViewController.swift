@@ -16,6 +16,8 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
 
     var questions: [String] = ["Are you a Manager or Model?", "How many models do you have?", "What's your manager's name?"]
     var currentIndex: Int = 0
+    
+    var userData = UserData()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +25,7 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
         dataSource = self
         delegate = self
         showQuestion()
+        loadUserData()
     }
 
     func showQuestion() {
@@ -66,8 +69,39 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
             // If Model is selected, skip to the third question
             currentIndex += 2
         }
+        
+        // Save user's role in the UserData struct
+               userData.role = option
 
         // Show the next question
         showQuestion()
+        
+      
     }
+    // Call this function when onboarding is completed
+     func onboardingCompleted() {
+         // Save the userData in UserDefaults
+         saveUserData()
+         
+         // Handle completion of onboarding
+         // For example, navigate to the main content screen
+         print("Onboarding completed!")
+         
+         print(saveUserData())
+     }
+    
+    func saveUserData() {
+           let userDataEncoded = try? JSONEncoder().encode(userData)
+           UserDefaults.standard.set(userDataEncoded, forKey: "UserData")
+       }
+
+       func loadUserData() {
+           if let userDataEncoded = UserDefaults.standard.data(forKey: "UserData"),
+               let loadedUserData = try? JSONDecoder().decode(UserData.self, from: userDataEncoded) {
+               userData = loadedUserData
+               print(userData.managerName)
+               print(userData.numberOfModels)
+               print(userData.modelData)
+           }
+       }
 }
