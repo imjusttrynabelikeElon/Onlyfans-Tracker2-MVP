@@ -250,7 +250,6 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
             navigationController?.pushViewController(navSelectorViewController, animated: true)
         }
     }
-
     
     // Function to handle the "Finish" button tap
        @objc private func finishButtonTapped() {
