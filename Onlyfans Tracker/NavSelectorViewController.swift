@@ -8,7 +8,12 @@
 import UIKit
 import SDWebImage
 
-class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, AddModelLinksDelegate {
+    func didAddModels(_ modelData: [Model]) {
+        self.modelData = modelData
+               collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelData.count
     }
@@ -31,6 +36,7 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
     var infoLabel: UILabel!
     var modelData: [Model] // Ensure Model struct is defined
     var collectionView: UICollectionView!
+    weak var addModelLinksDelegate: AddModelLinksDelegate?
     
     init(modelData: [Model]) {
           self.modelData = modelData
@@ -175,7 +181,7 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
            // Handle tap on a collection view cell
-           print("Image tapped at index: \(indexPath.item)")
+        print("Image tapped at index: \(indexPath.item)")
 
            // Add blink animation to the selected cell
            if let cell = collectionView.cellForItem(at: indexPath) as? ModelCell {

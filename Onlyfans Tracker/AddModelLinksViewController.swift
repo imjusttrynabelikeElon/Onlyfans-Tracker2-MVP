@@ -8,10 +8,19 @@
 import UIKit
 import Foundation
 
-class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+protocol AddModelLinksDelegate: AnyObject {
+    func didAddModels(_ models: [Model])
+}
+class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AddModelLinksDelegate {
+    func didAddModels(_ models: [Model]) {
+        // Handle the added models as needed
+             print("Models added:", models)
+    }
+    
     private var currentModel: Int = 1 // The current model being added
     private var totalModels: Int // Total number of models to add
-    
+    weak var delegate: AddModelLinksDelegate?
     
     // Array to store model data (links and phone numbers)
     private var modelData: [Model] = []
@@ -19,7 +28,7 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
     
     let onlyFansLinkTextField: UITextField = {
           let textField = UITextField()
-          textField.placeholder = "Model's OnlyFans Link"
+          textField.placeholder = "Model's OnlyFans Username"
           textField.borderStyle = .roundedRect
           textField.translatesAutoresizingMaskIntoConstraints = false
           return textField
@@ -35,7 +44,7 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
     
     let gmailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Model Email"
+        textField.placeholder = "Model Email Address"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -193,14 +202,11 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
       }
 
      func isValidOnlyFansLink(link: String?) -> Bool {
-          guard let link = link, let url = URL(string: link) else { return false }
-          // Add any specific validation for OnlyFans link if needed
-          return UIApplication.shared.canOpenURL(url)
+         return true
       }
       // Function to validate link format
       func isValidLink(link: String?) -> Bool {
-          guard let link = link, let url = URL(string: link) else { return false }
-          return UIApplication.shared.canOpenURL(url)
+          return true
       }
     
     @objc private func textFieldDidChange() {
@@ -226,7 +232,6 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
     
   
     
-    // Inside AddModelLinksViewController
     @objc private func nextButtonTapped() {
         // Save data for the current model and reset text fields
         saveDataForCurrentModel()
@@ -245,20 +250,34 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
                 print("Model \(index + 1) - Image: \(model.image != nil ? "Set" : "Not Set")")
             }
 
-            // Push to NavSelectorViewController and pass the modelData
-            let navSelectorViewController = NavSelectorViewController(modelData: modelData)
-            navigationController?.pushViewController(navSelectorViewController, animated: true)
+            // Push to SelectOptionViewController and pass the modelData
+            let selectOptionViewController = NavSelectorViewController(modelData: modelData)
+            selectOptionViewController.modelData = modelData
+            navigationController?.pushViewController(selectOptionViewController, animated: true)
+        } else {
+            // Continue adding models
+            // You can choose to perform any additional actions here if needed
         }
     }
-    
-    // Function to handle the "Finish" button tap
-       @objc private func finishButtonTapped() {
-           // Perform any additional actions if needed before pushing back
-           // to OnboardingViewController
 
-           // Push back to OnboardingViewController
-           navigationController?.popToRootViewController(animated: true)
-       }
+    
+    @objc private func finishButtonTapped() {
+        // Perform any additional actions if needed before pushing back
+        // to OnboardingViewController
+
+        // Pass the modelData to the delegate before popping back
+        delegate?.didAddModels(modelData)
+
+        // Create an instance of NavSelectorViewController with the modelData
+        let navSelectorViewController = NavSelectorViewController(modelData: modelData)
+
+        // Set the delegate
+        navSelectorViewController.addModelLinksDelegate = self
+
+        // Push to NavSelectorViewController
+        navigationController?.pushViewController(navSelectorViewController, animated: true)
+    }
+
 
     private func saveDataForCurrentModel() {
         // Create a model instance for the current model

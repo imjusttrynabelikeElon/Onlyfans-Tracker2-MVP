@@ -18,6 +18,7 @@ class SelectOptionViewController: UIViewController {
     }
     
     var selectedModel: Model?
+    var modelData: [Model]?
 
     private func setupButtons() {
         let messageModelButton = createButton(withTitle: "Message Model", action: #selector(messageModelTapped))
@@ -75,32 +76,34 @@ class SelectOptionViewController: UIViewController {
 
 
     @objc private func instagramTapped() {
-           print("Model's Instagram button tapped!")
-           // Replace "model_instagram_username" with the actual Instagram username of the model
-           let instagramURL = URL(string: "https://www.instagram.com/model_instagram_username/")
-           if let url = instagramURL, UIApplication.shared.canOpenURL(url) {
-               UIApplication.shared.open(url, options: [:], completionHandler: nil)
-           }
-       }
+        print("Model's Instagram button tapped!")
+        if let instagramUsername = selectedModel?.instagram,
+           let url = URL(string: "https://www.instagram.com/\(instagramUsername)/"),
+           UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        print(selectedModel?.instagram)
+    }
 
-       @objc private func twitterTapped() {
-           print("Model's Twitter button tapped!")
-           // Replace "model_twitter_username" with the actual Twitter username of the model
-           let twitterURL = URL(string: "https://twitter.com/model_twitter_username/")
-           if let url = twitterURL, UIApplication.shared.canOpenURL(url) {
-               UIApplication.shared.open(url, options: [:], completionHandler: nil)
-           }
-       }
+    @objc private func twitterTapped() {
+        print("Model's Twitter button tapped!")
+        if let twitterUsername = selectedModel?.twitter,
+           let url = URL(string: "https://twitter.com/\(twitterUsername)/"),
+           UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        print(selectedModel?.twitter)
+    }
 
-       @objc private func onlyFansTapped() {
-           print("Model's OnlyFans button tapped!")
-           // Replace "model_onlyfans_username" with the actual OnlyFans username or link of the model
-           let onlyFansURL = URL(string: "https://onlyfans.com/model_onlyfans_username/")
-           if let url = onlyFansURL, UIApplication.shared.canOpenURL(url) {
-               UIApplication.shared.open(url, options: [:], completionHandler: nil)
-           }
-       }
-   
+    @objc private func onlyFansTapped() {
+        print("Model's OnlyFans button tapped!")
+        if let onlyFansUsername = selectedModel?.onlyFansLink,
+           let url = URL(string: "https://onlyfans.com/\(onlyFansUsername)/"),
+           UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        }
+        print(selectedModel?.onlyFansLink)
+    }
 
     private func createButton(withTitle title: String, action: Selector) -> UIButton {
         let button = UIButton()
@@ -116,16 +119,14 @@ class SelectOptionViewController: UIViewController {
 
     @objc private func messageModelTapped() {
         print("Message Model button tapped!")
-        let phoneNumber = "sms://2123468423"
-        if let url = URL(string: phoneNumber) {
+        if let phoneNumber = selectedModel?.phoneNumber, let url = URL(string: "sms://\(phoneNumber)") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 
     @objc private func callModelTapped() {
         print("Call Model button tapped!")
-        let phoneNumber = "tel://2123468423"
-        if let url = URL(string: phoneNumber) {
+        if let phoneNumber = selectedModel?.phoneNumber, let url = URL(string: "tel://\(phoneNumber)") {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
@@ -143,3 +144,5 @@ class SelectOptionViewController: UIViewController {
         }
     }
 }
+
+// fix the small bug where it would not push to the link because inside of the addLinksVC the user enters the name but leaves a space at the end. That makes the url not push for some reason.
