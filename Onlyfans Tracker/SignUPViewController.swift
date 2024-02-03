@@ -140,7 +140,7 @@ class SignUpViewController: UIViewController {
             if let error = error {
                 // Handle error during authentication
                 print("Error creating user: \(error.localizedDescription)")
-                self.showAlertt(message: "Error creating user. Please try again.")
+                self.showAlertt(message: "The email address is already in use by another account")
                 return
             }
 

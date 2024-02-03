@@ -54,9 +54,12 @@ class ManagerNameViewController: UIViewController, UITextFieldDelegate {
     }
 
     @objc private func confirmButtonTapped() {
-        let addLinksVC = AddLinksViewController()
-        navigationController?.pushViewController(addLinksVC, animated: true)
-    }
+          guard let managerName = textField.text else { return }
+          delegate?.didEnterManagerName(managerName)
+
+          let addLinksVC = AddLinksViewController()
+          navigationController?.pushViewController(addLinksVC, animated: true)
+      }
 
     // MARK: - UITextFieldDelegate
 

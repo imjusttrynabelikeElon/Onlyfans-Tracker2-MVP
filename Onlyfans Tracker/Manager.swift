@@ -13,14 +13,15 @@ import UIKit
 class Manager {
     var name: String
     var phoneNumber: String
-    var image: UIImage?  // Add this property for the manager's image
+    var image: UIImage?
+    var email: String?
+    var instagram: String?
+    var twitter: String?
 
-    init(name: String, phoneNumber: String, image: UIImage? = nil) {
+    init(name: String, phoneNumber: String, email: String?, image: UIImage? = nil) {
         self.name = name
         self.phoneNumber = phoneNumber
+        self.email = email
         self.image = image
-        
-    
     }
-
 }

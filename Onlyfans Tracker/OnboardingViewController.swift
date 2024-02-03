@@ -9,6 +9,10 @@
 import UIKit
 
 class OnboardingViewController: UIPageViewController, UIPageViewControllerDelegate, UIPageViewControllerDataSource, QuestionViewControllerDelegate {
+    func didEnterManagerName(_ managerName: String) {
+        
+    }
+    
     func didTapBackButton() {
         
     }

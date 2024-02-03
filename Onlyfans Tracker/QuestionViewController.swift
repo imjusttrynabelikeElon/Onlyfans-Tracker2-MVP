@@ -10,9 +10,14 @@ import UIKit
 
 protocol QuestionViewControllerDelegate: AnyObject {
     func didSelectOption(_ option: String)
+    func didEnterManagerName(_ managerName: String)
 }
 
 class QuestionViewController: UIViewController, UITextFieldDelegate, QuestionViewControllerDelegate {
+    func didEnterManagerName(_ managerName: String) {
+        print("Manager Name \(managerName)")
+    }
+    
     var question: String?
 
     override func viewDidLoad() {

@@ -10,26 +10,37 @@ import UIKit
 
 import UIKit
 
+protocol ModelsNavSelectorDelegate: AnyObject {
+    func didUpdateManagerData(_ manager: Manager)
+}
+
 class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelData.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard modelData.indices.contains(indexPath.item) else {
+            // Handle the case where modelData is empty or index is out of bounds
+            // You can return a default cell or handle it in a way that fits your logic
+            return collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
+        }
+
+        // Rest of your code to configure the cell using modelData
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ModelCell.reuseIdentifier, for: indexPath) as! ModelCell
-        
         let model = modelData[indexPath.item]
-        
+
         if let modelImage: UIImage = model.image {
             cell.imageView.image = modelImage
         } else {
             cell.imageView.image = UIImage(named: "default_avatar")
         }
-        
+
         // Customize other cell properties as needed
-        
+
         return cell
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
           // Handle tap on a collection view cell
@@ -46,6 +57,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
               }
           }
 
+        
           // Retrieve the selected Manager
           let selectedManager = modelData[indexPath.item]
 
@@ -57,6 +69,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
               // Pass the selected Manager data to the next view controller
               managerSelectOptionViewController.selectedManager = selectedManager
 
+              delegate?.didUpdateManagerData(selectedManager)
               // Push ManagerSelectOptionViewController onto the navigation stack
               navigationController?.pushViewController(managerSelectOptionViewController, animated: true)
           }
@@ -78,14 +91,21 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
     var managerName: String?
     var managerImage: UIImage?
     var managerImageView: UIImageView!
+    weak var delegate: ModelsNavSelectorDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         title = "Tap On Your Manager"
 
-        populateModelData()
+        // Initialize modelData with the passed manager data
+          if let managerName = managerName, let managerImage = managerImage {
+              let currentManager = Manager(name: managerName, phoneNumber: "", email: "", image: managerImage)
+              modelData.append(currentManager)
+              print(modelData)
+          }
         
+        print(modelData)
         // ... (your existing code)
 
         // Create manager image view
@@ -125,28 +145,25 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         view.backgroundColor = .white
     }
     
-    func populateModelData() {
-        // Create instances of Manager and populate the modelData array
-        let manager1 = Manager(name: "Manager 1", phoneNumber: "123-456-7890", image: UIImage(named: "manager1_image"))
-        let manager2 = Manager(name: "Manager 2", phoneNumber: "987-654-3210", image: UIImage(named: "manager2_image"))
-        // Add other managers as needed
+  
+    @objc private func managerImageTapped() {
+        // Handle tap on managerImageView
+        print("Manager Image tapped!")
 
-        // Populate the modelData array
-        modelData = [manager1, manager2]
+        // Create an instance of ManagerSelectOptionViewController
+        let managerSelectOptionViewController = ManagerSelectOptionViewController()
+
+        // Assuming modelData contains at least one manager (you might need to check for this)
+        if let selectedManager = modelData.first {
+            // Pass the selected Manager data to the next view controller
+            managerSelectOptionViewController.selectedManager = selectedManager
+
+            print(selectedManager)
+            // Push ManagerSelectOptionViewController onto the navigation stack
+            navigationController?.pushViewController(managerSelectOptionViewController, animated: true)
+        }
     }
 
-    // ... (your existing code)
-    
-    @objc private func managerImageTapped() {
-          // Handle tap on managerImageView
-          print("Manager Image tapped!")
-
-        // Create an instance of SelectOptionViewController
-        let ManagerSelectOptionViewController = ManagerSelectOptionViewController()
-
-        // Push the SelectOptionViewController onto the navigation stack
-        navigationController?.pushViewController(ManagerSelectOptionViewController, animated: true)
-      }
 }
 
 // Function to populate the modelData array with instances of Manager

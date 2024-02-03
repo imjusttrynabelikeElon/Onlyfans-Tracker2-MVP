@@ -14,16 +14,35 @@ import UIKit
 
 
 
-class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, ModelsNavSelectorDelegate, QuestionViewControllerDelegate {
+    func didSelectOption(_ option: String) {
+        
+    }
+    
+    func didEnterManagerName(_ managerName: String) {
+        print("Managers Name \(managerName)")
+        ManagerName = managerName
+        
+    }
+    
+    func didUpdateManagerData(_ manager: Manager) {
+        if let index = modelData.firstIndex(where: { $0.name == manager.name }) {
+                    modelData[index] = manager
+                }
+    }
+    
     
     var managerImageView: UIImageView!
       var addImageButton: UIButton!
     // Add managerName property
        var managerName: String?
+    var modelData: [Manager] = []  // Ensure Model struct is defined
+    var ManagerName: String?
+
 
     let instagramTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Manager Instagram"
+        textField.placeholder = "Manager Instagram Name"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -31,7 +50,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
 
     let gmailTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Manager Email"
+        textField.placeholder = "Manager Email Address"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -48,7 +67,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
 
     let twitterTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Manager Twitter (Optional)"
+        textField.placeholder = "Manager Twitter Username (Optional)"
         textField.borderStyle = .roundedRect
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -65,7 +84,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        title = "Add Manager's Links/Contact Info"
+        title = "Add Manager's Socials/Contact Info"
 
         // Set the delegate for phoneNumberTextField, gmailTextField, and twitterTextField
         phoneNumberTextField.delegate = self
@@ -109,14 +128,69 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         
        }
     
+    func populateModelData() {
+     
+        // Add other managers as needed
+
+        // Populate the modelData array
+       
+    }
+
+    private func saveDataForCurrentManager() {
+          // Create a manager instance for the current manager
+          var currentManagerData = Manager(name: ManagerName ?? "",
+                                           phoneNumber: phoneNumberTextField.text ?? "",
+                                           email: gmailTextField.text ?? "",
+                                           image: managerImageView.image)
+
+          // Add other properties to the manager instance as needed
+          currentManagerData.instagram = instagramTextField.text
+          currentManagerData.twitter = twitterTextField.text
+
+          // If you have additional properties, add them here.
+
+          // Update the modelData array with the current manager's data
+          if let index = modelData.firstIndex(where: { $0.name == currentManagerData.name }) {
+              // If the manager is already in the modelData, update the data
+              modelData[index] = currentManagerData
+          } else {
+              // If the manager is not in the modelData, append the data
+              modelData.append(currentManagerData)
+          }
+
+          // Print the data for the current manager
+          print("Manager Data:")
+          print("Name: \(currentManagerData.name)")
+          print("Phone Number: \(currentManagerData.phoneNumber)")
+          print("Email: \(currentManagerData.email)")
+          print("Instagram: \(currentManagerData.instagram ?? "N/A")")
+          print("Twitter: \(currentManagerData.twitter ?? "N/A")")
+
+          // Print the image data if needed
+          if let imageData = currentManagerData.image?.pngData() {
+              print("Image Data: \(imageData)")
+          } else {
+              print("No Image Data")
+          }
+
+          // Reset text fields and remove the image for the next manager
+   //       resetTextFields()
+          managerImageView.image = nil // Remove the image
+
+          // Disable Next button until text fields are filled again
+          nextButton.isEnabled = false
+      }
+
     
     
-    @objc func nextButtonTapped() {
+    @objc private func nextButtonTapped() {
         // Ensure the necessary conditions are met before navigating
-       
-              let managerName = managerName
-              let managerImage = managerImageView.image
-       
+        let managerName = ManagerName
+        let managerImage = managerImageView.image
+
+        // Save data for the current manager
+        saveDataForCurrentManager()
+        print(saveDataForCurrentManager())
 
         // Create an instance of ModelsNavSelectorViewController
         let modelsNavSelectorVC = ModelsNavSelectorViewController()
@@ -124,10 +198,15 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         // Pass data to the next view controller
         modelsNavSelectorVC.managerName = managerName
         modelsNavSelectorVC.managerImage = managerImage
+        modelsNavSelectorVC.modelData = modelData  // Pass the model data
 
-        // Push the ModelsNavSelectorViewController onto the navigation stack
+        // Set the delegate to self (AddLinksViewController) to receive updated manager data
+
+        // Use the same navigation controller to push the ModelsNavSelectorViewController
         navigationController?.pushViewController(modelsNavSelectorVC, animated: true)
     }
+
+
 
 
     @objc func addImageTapped() {
@@ -249,6 +328,8 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
                                      isValidEmail(email: gmailTextField.text) &&
                                      !phoneNumberTextField.text!.isEmpty 
     }
+    
+    
 
     // MARK: - UITextFieldDelegate
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -269,10 +350,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         return false
     }
     func isValidLink(link: String?) -> Bool {
-         // Check if the link is in a valid format
-         if let link = link, let url = URL(string: link), UIApplication.shared.canOpenURL(url) {
-             return true
-         }
-         return false
-     }
+        // Check if the link is in a valid format
+        return true
+    }
 }

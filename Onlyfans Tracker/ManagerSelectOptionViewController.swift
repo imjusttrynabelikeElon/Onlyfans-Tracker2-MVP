@@ -21,7 +21,7 @@ class ManagerSelectOptionViewController: UIViewController {
     private func setupButtons() {
         let callManagerButton = createButton(withTitle: "Call Manager", action: #selector(callManagerTapped))
         let messageManagerButton = createButton(withTitle: "Message", action: #selector(messageManagerTapped))
-        let managerDataButton = createButton(withTitle: "Manager Data", action: #selector(managerDataTapped))
+        let managerDataButton = createButton(withTitle: "Email Manager", action: #selector(emailManagerTapped))
         let remindersButton = createButton(withTitle: "Reminders", action: #selector(remindersTapped))
         let instagramButton = createButton(withTitle: "Manager's Instagram", action: #selector(instagramTapped))
         let twitterButton = createButton(withTitle: "Manager's Twitter", action: #selector(twitterTapped))
@@ -71,6 +71,8 @@ class ManagerSelectOptionViewController: UIViewController {
         ])
     }
 
+    
+    
     private func createButton(withTitle title: String, action: Selector) -> UIButton {
         let button = UIButton()
         button.setTitle(title, for: .normal)
@@ -84,26 +86,33 @@ class ManagerSelectOptionViewController: UIViewController {
     }
 
     @objc private func callManagerTapped() {
-        print("Call Manager button tapped!")
-        // Replace "manager_phone_number" with the actual phone number of the manager
-        let phoneNumber = "tel://manager_phone_number"
-        if let url = URL(string: phoneNumber) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        // Implement the logic to make a call using the manager's phone number
+        if let phoneNumber = selectedManager?.phoneNumber, let phoneURL = URL(string: "tel://\(phoneNumber)"), UIApplication.shared.canOpenURL(phoneURL) {
+            UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
         }
     }
 
     @objc private func messageManagerTapped() {
-        print("Message Manager button tapped!")
-        // Replace "manager_phone_number" with the actual phone number of the manager
-        let phoneNumber = "sms://manager_phone_number"
-        if let url = URL(string: phoneNumber) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        // Implement the logic to open the messaging app with the manager's phone number
+        // Note: This will open the default messaging app; you might need to adjust it based on your requirements.
+        if let phoneNumber = selectedManager?.phoneNumber, let messageURL = URL(string: "sms://\(selectedManager?.phoneNumber)"), UIApplication.shared.canOpenURL(messageURL) {
+            UIApplication.shared.open(messageURL, options: [:], completionHandler: nil)
         }
     }
 
-    @objc private func managerDataTapped() {
-        print("Manager Data button tapped!")
-      
+    @objc private func emailManagerTapped() {
+        // Implement the logic to send an email using the manager's email
+        
+        // Unwrap the optional email
+        if let email = selectedManager?.email, !email.isEmpty {
+            let emailURLString = "mailto:\(email)"
+            
+            // Create URL only if the string is not empty
+            if let emailURL = URL(string: emailURLString), UIApplication.shared.canOpenURL(emailURL) {
+                UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
+            }
+        }
+        print(selectedManager?.email)
     }
 
     @objc private func remindersTapped() {
@@ -115,19 +124,30 @@ class ManagerSelectOptionViewController: UIViewController {
 
     @objc private func instagramTapped() {
         print("Manager's Instagram button tapped!")
-        // Replace "manager_instagram_username" with the actual Instagram username of the manager
-        let instagramURL = URL(string: "https://www.instagram.com/manager_instagram_username/")
-        if let url = instagramURL, UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+        // Unwrap the optional string
+        if let instagramUsername = selectedManager?.instagram {
+            let instagramURLString = "https://www.instagram.com/\(instagramUsername)/"
+            
+            // Create URL only if the string is not empty
+            if let url = URL(string: instagramURLString), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
     }
 
     @objc private func twitterTapped() {
         print("Manager's Twitter button tapped!")
-        // Replace "manager_twitter_username" with the actual Twitter username of the manager
-        let twitterURL = URL(string: "https://twitter.com/manager_twitter_username/")
-        if let url = twitterURL, UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+        
+        // Unwrap the optional string
+        if let twitterUsername = selectedManager?.twitter {
+            let twitterURLString = "https://twitter.com/\(twitterUsername)"
+            
+            // Create URL only if the string is not empty
+            if let url = URL(string: twitterURLString), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
         }
     }
+
 }
