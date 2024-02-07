@@ -9,8 +9,65 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLinkssDelegate, AddModelLinksDelegatee {
+    func didTapNextButtonInAddModelLinks() {
+        signUpButton.isHidden = true
+    }
+    
+    private var authResult: AuthDataResult?
+    func didSaveSocialInfo(instagram: String?, twitter: String?, onlyFansLink: String?) {
+        guard let uid = authResult?.user.uid else {
+            // Handle the case where uid is not available
+            return
+        }
+
+        // Load existing user data for the current user
+        var userData = UserDataPersistence.shared.loadUserData(for: uid)
+
+        // If there is no existing data, create a new instance
+        if userData == nil {
+            userData = UserData(
+                uid: uid,
+                socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""),
+                role: nil,
+                numberOfModels: nil,
+                managerName: nil,
+                modelData: nil,
+                contactInfo: ContactInfo(email: "", phoneNumber: "")
+            )
+        }
+
+        // Update the social information
+        userData?.socialInfo.instagram = instagram!
+        userData?.socialInfo.twitter = twitter!
+        userData?.socialInfo.onlyFansLink = onlyFansLink!
+
+        // Save the updated user data
+        UserDataPersistence.shared.saveUserData(userData: userData!)
+
+        // Set userData and UserDataSingleton
+        self.userData = userData
+        UserDataSingleton.shared.uid = uid
+
+        // Push to OnboardingViewController or perform other actions
+        let onboardingViewController = OnboardingViewController()
+        self.navigationController?.pushViewController(onboardingViewController, animated: true)
+    }
+
+    
+    func didSignIn(userData: UserData) {
+        print("UID after sign in: \(userData.uid)")
+    }
+    
+    var userData: UserData?
+    var instagram: String? = ""
+    var twitter: String? = ""
+    var onlyFansLink: String? = ""
+   
+      // Add a default initializer
+  
 
     let usernameTextField: UITextField = {
         let textField = UITextField()
@@ -59,6 +116,8 @@ class SignUpViewController: UIViewController {
         signUpButton.addTarget(self, action: #selector(signUpButtonTapped), for: .touchUpInside)
         
         signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
+        
+      //  NotificationCenter.default.addObserver(self, selector: #selector(handleNextButtonTapped), name: .nextButtonTappedInAddModelLinks, object: nil)
     }
 
     func setupUI() {
@@ -96,6 +155,13 @@ class SignUpViewController: UIViewController {
         ])
     }
 
+   // @objc  func handleNextButtonTapped() {
+          // Hide the sign-up button
+     //     signUpButton.isHidden = true
+     //   print("dbfbfdfdbdffdffdOUIHOHOIOIJ")
+   //   }
+    
+    
     @objc func signUpButtonTapped() {
         // Check if all text fields are filled
         guard let username = usernameTextField.text,
@@ -106,6 +172,7 @@ class SignUpViewController: UIViewController {
             return
         }
 
+        
         // Check if the username is at least 5 characters long
         guard username.count >= 5 else {
             // Display an error message or alert indicating that the username must be at least 5 characters
@@ -129,11 +196,12 @@ class SignUpViewController: UIViewController {
             return
         }
 
-        // If all checks pass, proceed with user registration in Firebase
-        signUp(username: username, email: email, password: password)
+        signUp(username: username, email: email, password: password, instagram: instagram!, twitter: twitter!, onlyFansLink: onlyFansLink!)
     }
+    
+    
 
-    func signUp(username: String, email: String, password: String) {
+    func signUp(username: String, email: String, password: String, instagram: String, twitter: String, onlyFansLink: String) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
 
@@ -144,33 +212,39 @@ class SignUpViewController: UIViewController {
                 return
             }
 
-            // Authentication successful
+            // Save the authResult when authentication is successful
+            self.authResult = authResult
+
+            // After successful login or signup, set userData and UserDataManager
             if let uid = authResult?.user.uid {
-                // Create a reference to the Firebase database
-                let databaseRef = Database.database().reference().child("users").child(uid)
+                // Create an instance of UserData
+                let userData = UserData(
+                    uid: uid,
+                    socialInfo: SocialInfo(instagram: instagram, twitter: twitter, onlyFansLink: onlyFansLink),
+                    role: nil,
+                    numberOfModels: nil,
+                    managerName: nil,
+                    modelData: nil,
+                    contactInfo: ContactInfo(email: email, phoneNumber: "")
+                )
 
-                // Save additional user data to the database
-                let userData: [String: Any] = ["username": username, "email": email, "password": password]
+                // Save userData using UserDataManager
+                UserDataManager.shared.saveUserData(userData)
 
-                // You can add more fields to the userData dictionary as needed
-                // ...
+                // Set userData and UserDataSingleton
+                self.userData = userData
+                UserDataSingleton.shared.uid = uid
 
-                // Save user data under a node named with the user's UID
-                databaseRef.setValue(userData)
-
-                // Print user details
-                print("User successfully registered and authenticated.")
-                print("User ID: \(uid)")
-                print("Username: \(username)")
-                print("Email: \(email)")
-                print("Password: \(password)")
-
-                // After successful signup, navigate to the OnboardingViewController
+                // Push to OnboardingViewController
                 let onboardingViewController = OnboardingViewController()
                 self.navigationController?.pushViewController(onboardingViewController, animated: true)
             }
         }
     }
+
+
+       // ... rest
+
 
 
   
@@ -186,9 +260,30 @@ class SignUpViewController: UIViewController {
 
 
     @objc func signInButtonTapped() {
-        let loginViewController = LoginViewController() // Instantiate your LoginViewController
-        navigationController?.pushViewController(loginViewController, animated: true)
+        // Assuming you have a method to retrieve user data
+          userData = UserDataManager.shared.userData
+
+        if let loadedUserData = UserDataPersistence.shared.loadUserData(for: userData?.uid ?? "IUIHWEHIU") {
+            userData = loadedUserData
+        } else {
+            // Handle the case where user data is not available
+            print("Error: User data not available.")
+        }
+
+        // Push to LoginViewController
+        if let userDataa = userData {
+            let loginViewController = LoginViewController(userData: userDataa)
+            loginViewController.delegate = self
+            navigationController?.pushViewController(loginViewController, animated: true)
+        } else {
+            // Handle the case where user data is nil
+            print("Error: User data not available.")
+            
+        }
+
     }
+
+
 
 
     func isValidEmail(_ email: String) -> Bool {

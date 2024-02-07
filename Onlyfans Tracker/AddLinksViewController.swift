@@ -38,7 +38,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
        var managerName: String?
     var modelData: [Manager] = []  // Ensure Model struct is defined
     var ManagerName: String?
-
+   
 
     let instagramTextField: UITextField = {
         let textField = UITextField()
@@ -138,17 +138,24 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
 
     private func saveDataForCurrentManager() {
           // Create a manager instance for the current manager
-          var currentManagerData = Manager(name: ManagerName ?? "",
-                                           phoneNumber: phoneNumberTextField.text ?? "",
-                                           email: gmailTextField.text ?? "",
-                                           image: managerImageView.image)
+        var currentManagerData = Manager(name: ManagerName ?? "",
+                                            phoneNumber: phoneNumberTextField.text ?? "",
+                                            email: gmailTextField.text ?? "",
+                                            imageData: managerImageView.image?.pngData())  // Pass image data
 
-          // Add other properties to the manager instance as needed
-          currentManagerData.instagram = instagramTextField.text
-          currentManagerData.twitter = twitterTextField.text
+           // Add other properties to the manager instance as needed
+           currentManagerData.instagram = instagramTextField.text
+           currentManagerData.twitter = twitterTextField.text
 
-          // If you have additional properties, add them here.
-
+        
+           // Update UserDataSingleton with manager-related information
+           UserDataSingleton.shared.managerName = currentManagerData.name
+           UserDataSingleton.shared.managerPhoneNumber = currentManagerData.phoneNumber
+           UserDataSingleton.shared.managerEmail = currentManagerData.email
+           UserDataSingleton.shared.managerInstagram = currentManagerData.instagram
+           UserDataSingleton.shared.managerTwitter = currentManagerData.twitter
+           UserDataSingleton.shared.managerImage = currentManagerData.getImage()  // 
+        
           // Update the modelData array with the current manager's data
           if let index = modelData.firstIndex(where: { $0.name == currentManagerData.name }) {
               // If the manager is already in the modelData, update the data
@@ -167,7 +174,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
           print("Twitter: \(currentManagerData.twitter ?? "N/A")")
 
           // Print the image data if needed
-          if let imageData = currentManagerData.image?.pngData() {
+        if let imageData = currentManagerData.imageData, let modelImage = UIImage(data: imageData) {
               print("Image Data: \(imageData)")
           } else {
               print("No Image Data")

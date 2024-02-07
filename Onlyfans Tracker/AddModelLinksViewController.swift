@@ -7,24 +7,39 @@
 
 import UIKit
 import Foundation
-
+import Firebase
+import FirebaseAuth
 
 protocol AddModelLinksDelegate: AnyObject {
     func didAddModels(_ models: [Model])
 }
+
+protocol AddModelLinksDelegatee: AnyObject {
+    func didTapNextButtonInAddModelLinks()
+}
+
+protocol AddModelLinkssDelegate: AnyObject {
+    func didSaveSocialInfo(instagram: String?, twitter: String?, onlyFansLink: String?)
+}
+
 class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, AddModelLinksDelegate {
     func didAddModels(_ models: [Model]) {
-        // Handle the added models as needed
-             print("Models added:", models)
+        print("Models added:", models)
+        delegate?.didAddModels(modelData)
+
     }
     
     private var currentModel: Int = 1 // The current model being added
     private var totalModels: Int // Total number of models to add
     weak var delegate: AddModelLinksDelegate?
+    weak var delegatee: AddModelLinkssDelegate?
+    weak var delegate2: AddModelLinksDelegatee?
     
     // Array to store model data (links and phone numbers)
     private var modelData: [Model] = []
-
+ 
+    var userData: UserData?
+    
     
     let onlyFansLinkTextField: UITextField = {
           let textField = UITextField()
@@ -67,6 +82,10 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         return textField
     }()
     
+    
+    
+    
+    
     let nextButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Next", for: .normal)
@@ -100,6 +119,9 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
     }()
 
 
+    var instagram: String?
+     var twitter: String?
+     var onlyFansLink: String?
 
     
     init(numberOfModels: Int) {
@@ -192,6 +214,13 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
 
     }
     
+    private func saveSocialInfo() {
+          // Retrieve values from your text fields or wherever they are entered
+          instagram = instagramTextField.text
+          twitter = twitterTextField.text
+          onlyFansLink = onlyFansLinkTextField.text
+      }
+    
     // Function to validate email format
       func isValidEmail(email: String?) -> Bool {
           guard let email = email else { return false }
@@ -219,6 +248,9 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
       }
     
     
+    
+    
+    
     @objc private func imagePickerButtonTapped() {
            // Present image picker
            let imagePicker = UIImagePickerController()
@@ -230,11 +262,14 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
        }
 
     
-  
     
     @objc private func nextButtonTapped() {
         // Save data for the current model and reset text fields
         saveDataForCurrentModel()
+
+        // this is the amount
+        // this is the correct time
+
         resetTextFields()
 
         // Move to the next model
@@ -258,13 +293,21 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
             // Continue adding models
             // You can choose to perform any additional actions here if needed
         }
+
+        // Check if SignUpViewController is already loaded
+        if let signUpViewController = navigationController?.viewControllers.first(where: { $0 is SignUpViewController }) as? SignUpViewController {
+          //  signUpViewController.handleNextButtonTapped()
+        } else {
+            // SignUpViewController is not loaded yet, it will handle the notification when it loads
+        }
     }
+
 
     
     @objc private func finishButtonTapped() {
         // Perform any additional actions if needed before pushing back
         // to OnboardingViewController
-
+   saveSocialInfo()
         // Pass the modelData to the delegate before popping back
         delegate?.didAddModels(modelData)
 
@@ -287,7 +330,23 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         currentModelData.email = gmailTextField.text
         currentModelData.phoneNumber = phoneNumberTextField.text
         currentModelData.twitter = twitterTextField.text
-        currentModelData.image = modelImageView.image // Save the image
+        
+        
+        
+        
+        print("CHECKER\( userData?.socialInfo.onlyFansLink = onlyFansLinkTextField.text!)")
+        if let image = modelImageView.image {
+            // Convert UIImage to Data
+            if let imageData = image.pngData() {
+                // Save the image data
+                currentModelData.image = imageData
+            } else {
+                // Handle the case where image couldn't be converted to data (PNG format)
+            }
+        } else {
+            // Handle the case where modelImageView.image is nil
+        }
+        
         
         // Append the model instance to the modelData array
         modelData.append(currentModelData)
@@ -299,12 +358,56 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         print("Email: \(currentModelData.email ?? "N/A")")
         print("Phone Number: \(currentModelData.phoneNumber ?? "N/A")")
         print("Twitter: \(currentModelData.twitter ?? "N/A")")
+
+        // Update social information in UserDataManager
+        UserDataManager.shared.updateSocialInfo(
+            instagram: currentModelData.instagram,
+            twitter: currentModelData.twitter,
+            onlyFansLink: currentModelData.onlyFansLink
+        )
+
+        delegatee?.didSaveSocialInfo(instagram: currentModelData.instagram, twitter: currentModelData.twitter, onlyFansLink: currentModelData.onlyFansLink)
+       
+        // Use optional binding to safely unwrap and assign values
+        if let onlyFansLink = currentModelData.onlyFansLink {
+            userData?.socialInfo.onlyFansLink = onlyFansLink
+            print("CHECKER OnlyFansLink: \(onlyFansLink)")
+        } else {
+            print("CHECKER OnlyFansLink is nil")
+        }
+        
+        if let instagram = currentModelData.instagram {
+            userData?.socialInfo.instagram = instagram
+            print("CHECKER Instagram: \(instagram)")
+        } else {
+            print("CHECKER Instagram is nil")
+        }
+        
+        // Using nil-coalescing operator to provide a default value
+        userData?.socialInfo.twitter = currentModelData.twitter ?? ""
+        print("CHECKER Twitter: \(userData?.socialInfo.twitter ?? "N/A")")
+        UserDataSingleton.shared.socialInfo.instagram = userData?.socialInfo.instagram ?? "J"
+     
+        saveSocialInfo()
+        UserDataManager.shared.updateSocialInfo(instagram: currentModelData.instagram, twitter: currentModelData.twitter, onlyFansLink: currentModelData.onlyFansLink)
+        
+        if let userData = userData {
+            UserDataPersistence.shared.saveUserData(userData: userData)
+        }
+     
+        
+        // Save the updated userData to UserDefaults or your data store
+//        UserDataPersistence.shared.saveUserData(userData: userData!)
         
         // Print the image data if needed
-        if let imageData = currentModelData.image?.pngData() {
-            print("Image Data: \(imageData)")
+        if let image = modelImageView.image {
+            if let imageData = image.jpegData(compressionQuality: 1.0) {
+                currentModelData.image = imageData
+            } else {
+                // Handle the case where image couldn't be converted to data
+            }
         } else {
-            print("No Image Data")
+            // Handle the case where modelImageView.image is nil
         }
         
         // Reset text fields and remove the image for the next model
@@ -314,7 +417,6 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         // Disable Next button until text fields are filled again
         nextButton.isEnabled = false
     }
-
 
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {

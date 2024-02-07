@@ -9,6 +9,14 @@ import UIKit
 import SDWebImage
 
 class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, AddModelLinksDelegate {
+    func didAddModels(_ models: [Model], socialInfo: SocialInfo) {
+        // Handle the added models or perform any necessary actions
+               print("Models added:", models)
+
+               // Access and update the userData's socialInfo
+               self.userData?.socialInfo = socialInfo
+    }
+    
     func didAddModels(_ modelData: [Model]) {
         self.modelData = modelData
                collectionView.reloadData()
@@ -22,16 +30,16 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ModelCell.reuseIdentifier, for: indexPath) as! ModelCell
 
         let model = modelData[indexPath.item]
-
         if let modelImage = model.image {
-            cell.imageView.image = modelImage
+            cell.imageView.image = UIImage(data: modelImage)
         } else {
-            cell.imageView.image = UIImage(named: "default_avatar")
+            // Handle the case where modelImage is nil or unable to convert to UIImage
+            cell.imageView.image = nil
         }
 
         return cell
     }
-    
+    var userData: UserData?
    
     var infoLabel: UILabel!
     var modelData: [Model] // Ensure Model struct is defined
@@ -51,7 +59,8 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
            super.viewDidLoad()
 
            title = "Tap On One Of Your Models"
-
+        navigationItem.hidesBackButton = true
+        
            // ... (your existing code)
         
       
@@ -129,11 +138,17 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
             let avatarButton = UIButton()
 
             if let modelImage = model.image {
-                avatarButton.setImage(modelImage, for: .normal)
+                if let image = UIImage(data: modelImage) {
+                    avatarButton.setImage(image, for: .normal)
+                } else {
+                    // Handle the case where the data couldn't be converted to a UIImage
+                    avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
+                }
             } else {
-                // Set a default image or handle the case when there is no image
+                // Handle the case where model.image is nil
                 avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
             }
+
 
             // Configure other avatarButton properties as needed
             avatarButton.tag = index

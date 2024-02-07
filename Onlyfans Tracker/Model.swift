@@ -10,19 +10,28 @@ import UIKit
 
 
 
-import UIKit
 
-class Model {
+
+class Model: Codable {
     var onlyFansLink: String?
     var instagram: String?
     var email: String?
     var phoneNumber: String?
     var twitter: String?
-    var image: UIImage? // Add this property
+    var image: Data? // Change UIImage to Data
 
     // Other properties...
 
-    init(onlyFansLink: String?) {
+    init(onlyFansLink: String?, image: UIImage? = nil) {
         self.onlyFansLink = onlyFansLink
+        self.image = image?.pngData() // Convert UIImage to Data
+    }
+
+    // If you need to convert Data back to UIImage
+    func getImage() -> UIImage? {
+        if let imageData = image {
+            return UIImage(data: imageData)
+        }
+        return nil
     }
 }

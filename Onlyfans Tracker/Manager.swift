@@ -8,20 +8,28 @@
 import Foundation
 import UIKit
 
+import UIKit
 
-
-class Manager {
+class Manager: Codable {
     var name: String
     var phoneNumber: String
-    var image: UIImage?
+    var imageData: Data?  // Use Data to store image
     var email: String?
     var instagram: String?
     var twitter: String?
 
-    init(name: String, phoneNumber: String, email: String?, image: UIImage? = nil) {
+    // Additional properties and methods as needed
+
+    init(name: String, phoneNumber: String, email: String?, imageData: Data? = nil) {
         self.name = name
         self.phoneNumber = phoneNumber
         self.email = email
-        self.image = image
+        self.imageData = imageData
+    }
+
+    // Additional methods for working with images
+    func getImage() -> UIImage? {
+        guard let imageData = imageData else { return nil }
+        return UIImage(data: imageData)
     }
 }

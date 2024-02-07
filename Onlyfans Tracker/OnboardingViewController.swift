@@ -21,7 +21,15 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
     var questions: [String] = ["Are you a Manager or Model?", "How many models do you have?", "What's your manager's name?"]
     var currentIndex: Int = 0
     
-    var userData = UserData()
+    var userData = UserData(
+        uid: "", socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""),
+        role: nil,
+        numberOfModels: nil,
+        managerName: nil,
+        modelData: nil,
+        contactInfo: ContactInfo(email: "", phoneNumber: "")
+    )
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -95,17 +103,23 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
      }
     
     func saveUserData() {
-           let userDataEncoded = try? JSONEncoder().encode(userData)
-           UserDefaults.standard.set(userDataEncoded, forKey: "UserData")
-       }
+          // Assuming you have an instance of UserData called userData
+       //   let userData = //... create an instance of UserData
 
-       func loadUserData() {
-           if let userDataEncoded = UserDefaults.standard.data(forKey: "UserData"),
-               let loadedUserData = try? JSONDecoder().decode(UserData.self, from: userDataEncoded) {
-               userData = loadedUserData
-               print(userData.managerName)
-               print(userData.numberOfModels)
-               print(userData.modelData)
-           }
-       }
+          // Use UserDataPersistence to save the data
+          let userDataPersistence = UserDataPersistence()
+        userDataPersistence.saveUserData(userData: userData)
+
+      }
+
+      func loadUserData() {
+          // Use UserDataPersistence to load the data
+          let userDataPersistence = UserDataPersistence()
+          if let loadedUserData = userDataPersistence.loadUserData(for: userData.uid) {
+              // Handle the loaded user data as needed
+              print(loadedUserData.managerName)
+              print(loadedUserData.numberOfModels)
+              print(loadedUserData.modelData)
+          }
+      }
 }

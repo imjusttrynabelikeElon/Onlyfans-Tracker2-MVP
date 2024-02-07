@@ -28,19 +28,25 @@
 		C9441CFC2B5F459900C682E7 /* scheduledViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9441CFB2B5F459900C682E7 /* scheduledViewController.swift */; };
 		C9441CFE2B5F45AD00C682E7 /* todayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9441CFD2B5F45AD00C682E7 /* todayViewController.swift */; };
 		C9441D002B5F45D500C682E7 /* allViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9441CFF2B5F45D500C682E7 /* allViewController.swift */; };
+		C94ED0212B741A7C00BD0A02 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94ED0202B741A7C00BD0A02 /* Notification.swift */; };
 		C953C8392B6D6FF500121C55 /* ManagerSelectOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C953C8382B6D6FF500121C55 /* ManagerSelectOptionViewController.swift */; };
 		C953C83B2B6D71E100121C55 /* Manager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C953C83A2B6D71E100121C55 /* Manager.swift */; };
 		C96111392B6C007A00045F55 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96111382B6C007A00045F55 /* UserData.swift */; };
 		C961113B2B6C041900045F55 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = C961113A2B6C041900045F55 /* Model.swift */; };
+		C964D7A22B6EEAA100E6CCA8 /* UserDataPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C964D7A12B6EEAA100E6CCA8 /* UserDataPersistence.swift */; };
+		C964D7A42B6F174D00E6CCA8 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C964D7A32B6F174D00E6CCA8 /* User.swift */; };
+		C964D7A62B6F19F600E6CCA8 /* User Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = C964D7A52B6F19F600E6CCA8 /* User Profile.swift */; };
 		C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887B2B5E172D00F00409 /* DataViewController.swift */; };
 		C978887E2B5ED0B800F00409 /* SignUPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887D2B5ED0B800F00409 /* SignUPViewController.swift */; };
 		C97888802B5ED21300F00409 /* NavSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */; };
 		C97888852B5EE21D00F00409 /* SelectOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */; };
+		C9831A952B6FFF3B001FA960 /* UserDataSingleton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9831A942B6FFF3B001FA960 /* UserDataSingleton.swift */; };
 		C98614892B67F3F0001D124A /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = C98614882B67F3F0001D124A /* SDWebImage */; };
 		C986148B2B67F3F0001D124A /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C986148A2B67F3F0001D124A /* SDWebImageMapKit */; };
 		C9BA17402B69947700195804 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BA173F2B69947700195804 /* LoginViewController.swift */; };
 		C9C8030D2B6C354A00C3F8D3 /* ModelCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8030C2B6C354A00C3F8D3 /* ModelCell.swift */; };
 		C9C8030F2B6C5D1700C3F8D3 /* ModelsNavSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8030E2B6C5D1700C3F8D3 /* ModelsNavSelectorViewController.swift */; };
+		C9C871E62B71E0E100A27E9B /* UserDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C871E52B71E0E100A27E9B /* UserDataManager.swift */; };
 		C9D0419C2B6B1E5100BF09F5 /* AddLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */; };
 		C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */; };
 		C9FB4DA12B5D9DB6001D962A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FB4DA02B5D9DB6001D962A /* SceneDelegate.swift */; };
@@ -64,17 +70,23 @@
 		C9441CFB2B5F459900C682E7 /* scheduledViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scheduledViewController.swift; sourceTree = "<group>"; };
 		C9441CFD2B5F45AD00C682E7 /* todayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = todayViewController.swift; sourceTree = "<group>"; };
 		C9441CFF2B5F45D500C682E7 /* allViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = allViewController.swift; sourceTree = "<group>"; };
+		C94ED0202B741A7C00BD0A02 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 		C953C8382B6D6FF500121C55 /* ManagerSelectOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagerSelectOptionViewController.swift; sourceTree = "<group>"; };
 		C953C83A2B6D71E100121C55 /* Manager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Manager.swift; sourceTree = "<group>"; };
 		C96111382B6C007A00045F55 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		C961113A2B6C041900045F55 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		C964D7A12B6EEAA100E6CCA8 /* UserDataPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataPersistence.swift; sourceTree = "<group>"; };
+		C964D7A32B6F174D00E6CCA8 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		C964D7A52B6F19F600E6CCA8 /* User Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "User Profile.swift"; sourceTree = "<group>"; };
 		C978887B2B5E172D00F00409 /* DataViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataViewController.swift; sourceTree = "<group>"; };
 		C978887D2B5ED0B800F00409 /* SignUPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUPViewController.swift; sourceTree = "<group>"; };
 		C978887F2B5ED21300F00409 /* NavSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavSelectorViewController.swift; sourceTree = "<group>"; };
 		C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectOptionViewController.swift; sourceTree = "<group>"; };
+		C9831A942B6FFF3B001FA960 /* UserDataSingleton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataSingleton.swift; sourceTree = "<group>"; };
 		C9BA173F2B69947700195804 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		C9C8030C2B6C354A00C3F8D3 /* ModelCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelCell.swift; sourceTree = "<group>"; };
 		C9C8030E2B6C5D1700C3F8D3 /* ModelsNavSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelsNavSelectorViewController.swift; sourceTree = "<group>"; };
+		C9C871E52B71E0E100A27E9B /* UserDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDataManager.swift; sourceTree = "<group>"; };
 		C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddLinksViewController.swift; sourceTree = "<group>"; };
 		C9FB4D9B2B5D9DB6001D962A /* Onlyfans Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Onlyfans Tracker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FB4D9E2B5D9DB6001D962A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -139,12 +151,15 @@
 				C953C8382B6D6FF500121C55 /* ManagerSelectOptionViewController.swift */,
 				C9D0419B2B6B1E5100BF09F5 /* AddLinksViewController.swift */,
 				C92BA81B2B6B3BB700511CBD /* AddModelLinksViewController.swift */,
+				C94ED0202B741A7C00BD0A02 /* Notification.swift */,
+				C964D7A32B6F174D00E6CCA8 /* User.swift */,
 				C97888842B5EE21D00F00409 /* SelectOptionViewController.swift */,
 				C953C83A2B6D71E100121C55 /* Manager.swift */,
 				C9C8030C2B6C354A00C3F8D3 /* ModelCell.swift */,
 				C9441CF92B5F18CF00C682E7 /* ReminderViewViewController.swift */,
 				C9441CFF2B5F45D500C682E7 /* allViewController.swift */,
 				C922E2912B6AC53C00B7B52F /* OnboardingViewController.swift */,
+				C964D7A12B6EEAA100E6CCA8 /* UserDataPersistence.swift */,
 				C922E2932B6AC68F00B7B52F /* QuestionViewController.swift */,
 				C961113A2B6C041900045F55 /* Model.swift */,
 				C92BA8172B6B327C00511CBD /* HowManyModelsViewController.swift */,
@@ -153,6 +168,9 @@
 				C9441CFB2B5F459900C682E7 /* scheduledViewController.swift */,
 				C9BA173F2B69947700195804 /* LoginViewController.swift */,
 				C978887D2B5ED0B800F00409 /* SignUPViewController.swift */,
+				C9C871E52B71E0E100A27E9B /* UserDataManager.swift */,
+				C9831A942B6FFF3B001FA960 /* UserDataSingleton.swift */,
+				C964D7A52B6F19F600E6CCA8 /* User Profile.swift */,
 				C9FB4DA42B5D9DB6001D962A /* Main.storyboard */,
 				C9FB4DA72B5D9DB8001D962A /* Assets.xcassets */,
 				C902BE842B6864DF0004FA7D /* GoogleService-Info.plist */,
@@ -252,11 +270,15 @@
 			files = (
 				C9D0419C2B6B1E5100BF09F5 /* AddLinksViewController.swift in Sources */,
 				C9441D002B5F45D500C682E7 /* allViewController.swift in Sources */,
+				C964D7A22B6EEAA100E6CCA8 /* UserDataPersistence.swift in Sources */,
 				C9441CFC2B5F459900C682E7 /* scheduledViewController.swift in Sources */,
+				C9C871E62B71E0E100A27E9B /* UserDataManager.swift in Sources */,
 				C9FB4DA32B5D9DB6001D962A /* ViewController.swift in Sources */,
 				C9BA17402B69947700195804 /* LoginViewController.swift in Sources */,
 				C9441CFE2B5F45AD00C682E7 /* todayViewController.swift in Sources */,
+				C94ED0212B741A7C00BD0A02 /* Notification.swift in Sources */,
 				C92BA8182B6B327C00511CBD /* HowManyModelsViewController.swift in Sources */,
+				C964D7A42B6F174D00E6CCA8 /* User.swift in Sources */,
 				C9FB4D9F2B5D9DB6001D962A /* AppDelegate.swift in Sources */,
 				C9441CF82B5F135D00C682E7 /* ReminderViewController.swift in Sources */,
 				C939F0B82B5DC04400EAC39F /* OFAPICALLER.swift in Sources */,
@@ -269,6 +291,7 @@
 				C953C83B2B6D71E100121C55 /* Manager.swift in Sources */,
 				C978887C2B5E172D00F00409 /* DataViewController.swift in Sources */,
 				C922E2922B6AC53C00B7B52F /* OnboardingViewController.swift in Sources */,
+				C9831A952B6FFF3B001FA960 /* UserDataSingleton.swift in Sources */,
 				C9C8030F2B6C5D1700C3F8D3 /* ModelsNavSelectorViewController.swift in Sources */,
 				C953C8392B6D6FF500121C55 /* ManagerSelectOptionViewController.swift in Sources */,
 				C96111392B6C007A00045F55 /* UserData.swift in Sources */,
@@ -277,6 +300,7 @@
 				C939F0BA2B5DC2E400EAC39F /* OFMODELDATA.swift in Sources */,
 				C97888852B5EE21D00F00409 /* SelectOptionViewController.swift in Sources */,
 				C97888802B5ED21300F00409 /* NavSelectorViewController.swift in Sources */,
+				C964D7A62B6F19F600E6CCA8 /* User Profile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,15 @@ protocol ModelsNavSelectorDelegate: AnyObject {
 }
 
 class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    var managerName: String?
+     var managerImage: UIImage?
+     var modelData: [Manager] = []  // Ensure Model struct is defined
+    var managerImageView: UIImageView!
+    weak var delegate: ModelsNavSelectorDelegate?
+    
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelData.count
     }
@@ -30,11 +39,13 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ModelCell.reuseIdentifier, for: indexPath) as! ModelCell
         let model = modelData[indexPath.item]
 
-        if let modelImage: UIImage = model.image {
+        // Assuming 'model' is an instance of the Manager class
+        if let imageData: Data = model.imageData, let modelImage: UIImage = UIImage(data: imageData) {
             cell.imageView.image = modelImage
         } else {
             cell.imageView.image = UIImage(named: "default_avatar")
         }
+
 
         // Customize other cell properties as needed
 
@@ -58,21 +69,22 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
           }
 
         
-          // Retrieve the selected Manager
-          let selectedManager = modelData[indexPath.item]
+        // Retrieve the selected Manager
+           let selectedManager = modelData[indexPath.item]
 
-          // Get the reference to the storyboard
-          let storyboard = UIStoryboard(name: "Main", bundle: nil)  // Replace "Main" with your actual storyboard name
+           // Get the reference to the storyboard
+           let storyboard = UIStoryboard(name: "Main", bundle: nil)  // Replace "Main" with your actual storyboard name
 
-          // Instantiate ManagerSelectOptionViewController from the storyboard
-          if let managerSelectOptionViewController = storyboard.instantiateViewController(withIdentifier: "ManagerSelectOptionViewController") as? ManagerSelectOptionViewController {
-              // Pass the selected Manager data to the next view controller
-              managerSelectOptionViewController.selectedManager = selectedManager
+           // Instantiate ManagerSelectOptionViewController from the storyboard
+           if let managerSelectOptionViewController = storyboard.instantiateViewController(withIdentifier: "ManagerSelectOptionViewController") as? ManagerSelectOptionViewController {
+               // Pass the selected Manager data to the next view controller
+               managerSelectOptionViewController.selectedManager = selectedManager
 
-              delegate?.didUpdateManagerData(selectedManager)
-              // Push ManagerSelectOptionViewController onto the navigation stack
-              navigationController?.pushViewController(managerSelectOptionViewController, animated: true)
-          }
+               delegate?.didUpdateManagerData(selectedManager)
+               // Push ManagerSelectOptionViewController onto the navigation stack
+               navigationController?.pushViewController(managerSelectOptionViewController, animated: true)
+           }
+        
       }
 
 
@@ -82,16 +94,6 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
 
         
      
-    
-
-    // ... (your existing code)
-
-    var modelData: [Manager] = []  // Ensure Model struct is defined
-    
-    var managerName: String?
-    var managerImage: UIImage?
-    var managerImageView: UIImageView!
-    weak var delegate: ModelsNavSelectorDelegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,13 +101,13 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         title = "Tap On Your Manager"
 
         // Initialize modelData with the passed manager data
-          if let managerName = managerName, let managerImage = managerImage {
-              let currentManager = Manager(name: managerName, phoneNumber: "", email: "", image: managerImage)
-              modelData.append(currentManager)
-              print(modelData)
-          }
+        if let managerName = managerName, let managerImage = managerImage {
+                  let currentManager = Manager(name: managerName, phoneNumber: "", email: "")
+                  modelData.append(currentManager)
+              }
         
         print(modelData)
+        navigationItem.hidesBackButton = true
         // ... (your existing code)
 
         // Create manager image view

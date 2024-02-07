@@ -10,12 +10,17 @@ import UIKit
 
 class ManagerSelectOptionViewController: UIViewController {
     var selectedManager: Manager?
+    private var verticalStackView3: UIStackView!
+    var userData: UserData?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 255/255, green: 240/255, blue: 245/255, alpha: 1.0)
         title = "Pick Option"
+        navigationItem.hidesBackButton = true
+      
         setupButtons()
+        setupSignOutButton()
     }
 
     private func setupButtons() {
@@ -54,7 +59,7 @@ class ManagerSelectOptionViewController: UIViewController {
         ])
 
         // StackView for vertical alignment below horizontalStackView
-        let verticalStackView3 = UIStackView(arrangedSubviews: [instagramButton, twitterButton])
+         verticalStackView3 = UIStackView(arrangedSubviews: [instagramButton, twitterButton])
         verticalStackView3.axis = .vertical
         verticalStackView3.distribution = .fillEqually
         verticalStackView3.spacing = 40.0
@@ -71,7 +76,34 @@ class ManagerSelectOptionViewController: UIViewController {
         ])
     }
 
+    private func setupSignOutButton() {
+        let signOutButton = createButton(withTitle: "Sign Out", action: #selector(signOutTapped))
+        signOutButton.setTitleColor(UIColor.white, for: .normal) // Set title color to blue
+
+        view.addSubview(signOutButton)
+
+        // Add constraints for signOutButton
+        signOutButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            signOutButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signOutButton.topAnchor.constraint(equalTo: verticalStackView3.bottomAnchor, constant: 40.0)
+        ])
+    }
+
     
+    @objc private func signOutTapped() {
+        // Implement the sign-out functionality here
+        // For example, you can clear user data, navigate to the login screen, etc.
+
+        // Create a new instance of OnboardingViewController
+        let loginVC = LoginViewController(userData: userData!)
+ 
+        // Set the new view controllers as the only items in the navigation stack
+        navigationController?.setViewControllers([loginVC], animated: true)
+
+        print("Sign Out button tapped!")
+    }
+
     
     private func createButton(withTitle title: String, action: Selector) -> UIButton {
         let button = UIButton()
