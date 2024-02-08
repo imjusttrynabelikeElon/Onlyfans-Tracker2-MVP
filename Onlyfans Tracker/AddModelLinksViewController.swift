@@ -138,13 +138,38 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         setupUI()
         updateTitle()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-             view.addGestureRecognizer(tapGesture)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(taped))
+            view.addGestureRecognizer(tap)
+            NotificationCenter.default.addObserver(self, selector: #selector(KeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(KeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    @objc func handleTap() {
-            // Dismiss the keyboard
-            view.endEditing(true)
+    //This Method Will Hide The Keyboard
+    @objc func taped(){
+      self.view.endEditing(true)
+    }
+
+    @objc func KeyboardWillShow(sender: NSNotification){
+
+        let keyboardSize : CGSize = ((sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size)!
+        if self.view.frame.origin.y == 0{
+            self.view.frame.origin.y -= keyboardSize.height
         }
+
+    }
+
+    @objc func KeyboardWillHide(sender : NSNotification){
+
+        let keyboardSize : CGSize = ((sender.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size)!
+        if self.view.frame.origin.y != 0{
+            self.view.frame.origin.y += keyboardSize.height
+        }
+
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(true)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
 
     
     private func setupUI() {
