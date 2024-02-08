@@ -187,7 +187,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
            UserDataSingleton.shared.managerEmail = currentManagerData.email
            UserDataSingleton.shared.managerInstagram = currentManagerData.instagram
            UserDataSingleton.shared.managerTwitter = currentManagerData.twitter
-           UserDataSingleton.shared.managerImage = currentManagerData.getImage()  // 
+           UserDataSingleton.shared.managerImage = currentManagerData.getImage()  //
         
           // Update the modelData array with the current manager's data
           if let index = modelData.firstIndex(where: { $0.name == currentManagerData.name }) {
@@ -366,7 +366,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         // Enable the Next button if all required text fields are filled
         nextButton.isEnabled = !instagramTextField.text!.isEmpty &&
                                      isValidEmail(email: gmailTextField.text) &&
-                                     !phoneNumberTextField.text!.isEmpty 
+                                     !phoneNumberTextField.text!.isEmpty
     }
     
     
