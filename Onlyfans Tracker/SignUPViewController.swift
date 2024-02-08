@@ -118,7 +118,15 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
         signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         
       //  NotificationCenter.default.addObserver(self, selector: #selector(handleNextButtonTapped), name: .nextButtonTappedInAddModelLinks, object: nil)
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+              view.addGestureRecognizer(tapGesture)
     }
+    
+    @objc func handleTap() {
+         // Dismiss the keyboard
+         view.endEditing(true)
+     }
 
     func setupUI() {
         view.addSubview(usernameTextField)

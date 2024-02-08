@@ -24,8 +24,15 @@ class QuestionViewController: UIViewController, UITextFieldDelegate, QuestionVie
         super.viewDidLoad()
         title = "OFM Role"
         setupUI()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+              view.addGestureRecognizer(tapGesture)
     }
 
+    @objc func handleTap() {
+           // Dismiss the keyboard
+           view.endEditing(true)
+       }
+    
     func setupUI() {
         view.backgroundColor = .white
 

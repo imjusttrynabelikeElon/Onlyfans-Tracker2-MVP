@@ -85,6 +85,9 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         super.viewDidLoad()
         setupUI()
         title = "Add Manager's Socials/Contact Info"
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+             view.addGestureRecognizer(tapGesture)
 
         // Set the delegate for phoneNumberTextField, gmailTextField, and twitterTextField
         phoneNumberTextField.delegate = self
@@ -127,6 +130,13 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
       
         
        }
+    
+    @objc func handleTap() {
+        // Dismiss the keyboard
+        view.endEditing(true)
+    }
+
+
     
     func populateModelData() {
      

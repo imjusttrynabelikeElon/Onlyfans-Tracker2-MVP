@@ -63,7 +63,8 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         
            // ... (your existing code)
         
-      
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+              view.addGestureRecognizer(tapGesture)
 
         // Create a layout for the collection view
               let layout = UICollectionViewFlowLayout()
@@ -132,6 +133,10 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
            ])
        }
 
+    @objc func handleTap() {
+          // Dismiss the keyboard
+          view.endEditing(true)
+      }
     // Inside NavSelectorViewController
     private func setupAvatars() {
         for (index, model) in modelData.enumerated() {

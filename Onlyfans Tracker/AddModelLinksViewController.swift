@@ -137,7 +137,15 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         super.viewDidLoad()
         setupUI()
         updateTitle()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+             view.addGestureRecognizer(tapGesture)
     }
+    @objc func handleTap() {
+            // Dismiss the keyboard
+            view.endEditing(true)
+        }
+
     
     private func setupUI() {
         view.backgroundColor = .white

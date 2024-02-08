@@ -38,8 +38,16 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
         delegate = self
         showQuestion()
         loadUserData()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+              view.addGestureRecognizer(tapGesture)
     }
 
+    @objc func handleTap() {
+          // Dismiss the keyboard
+          view.endEditing(true)
+      }
+    
     func showQuestion() {
         if currentIndex < questions.count {
             let questionViewController = createQuestionViewController(question: questions[currentIndex])
