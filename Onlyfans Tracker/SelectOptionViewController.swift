@@ -292,5 +292,3 @@ class SelectOptionViewController: UIViewController {
         }
     }
 }
-
-// fix the small bug where it would not push to the link because inside of the addLinksVC the user enters the name but leaves a space at the end. That makes the url not push for some reason.

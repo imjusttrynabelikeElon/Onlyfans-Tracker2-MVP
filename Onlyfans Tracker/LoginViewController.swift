@@ -161,12 +161,17 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
     }
 
     func handleUserRoleAndNavigate() {
-        // Your logic to determine the next screen based on user role
-        // Example:
-        let selectOptionViewController = SelectOptionViewController()
-        selectOptionViewController.userData = self.userData
-        self.navigationController?.pushViewController(selectOptionViewController, animated: true)
+         // Your logic to determine the next screen based on user role
+         // Example:
+         let selectOptionViewController = SelectOptionViewController()
+         selectOptionViewController.userData = self.userData
+         self.navigationController?.pushViewController(selectOptionViewController, animated: true)
+         
+         
+         
+     
     }
+
 
 
     func fetchUserData() {

@@ -17,7 +17,7 @@ class ManagerSelectOptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 255/255, green: 240/255, blue: 245/255, alpha: 1.0)
         title = "Pick Option"
-        navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = false
       
         setupButtons()
         setupSignOutButton()
@@ -95,9 +95,15 @@ class ManagerSelectOptionViewController: UIViewController {
         // Implement the sign-out functionality here
         // For example, you can clear user data, navigate to the login screen, etc.
 
+        // Check if userData is not nil before creating LoginViewController
+        guard let userData = UserDataManager.shared.userData else {
+            print("userData is nil. Unable to sign out.")
+            return
+        }
+
         // Create a new instance of OnboardingViewController
-        let loginVC = LoginViewController(userData: userData!)
- 
+        let loginVC = LoginViewController(userData: userData)
+
         // Set the new view controllers as the only items in the navigation stack
         navigationController?.setViewControllers([loginVC], animated: true)
 

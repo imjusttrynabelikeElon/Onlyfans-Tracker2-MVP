@@ -240,6 +240,10 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         modelsNavSelectorVC.managerImage = managerImage
         modelsNavSelectorVC.modelData = modelData  // Pass the model data
 
+        UserDataSingleton.shared.managerImage = managerImage
+        UserDataSingleton.shared.managerName = ManagerName
+        UserDataSingleton.shared.modelData = modelData
+        
         // Set the delegate to self (AddLinksViewController) to receive updated manager data
 
         // Use the same navigation controller to push the ModelsNavSelectorViewController

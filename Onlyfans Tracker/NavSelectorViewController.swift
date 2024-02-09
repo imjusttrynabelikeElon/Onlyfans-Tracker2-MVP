@@ -8,6 +8,9 @@
 import UIKit
 import SDWebImage
 
+import UIKit
+import SDWebImage
+
 class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, AddModelLinksDelegate {
     func didAddModels(_ models: [Model], socialInfo: SocialInfo) {
         // Handle the added models or perform any necessary actions
@@ -146,11 +149,14 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
                 if let image = UIImage(data: modelImage) {
                     avatarButton.setImage(image, for: .normal)
                 } else {
+                    // Handle the case where the data couldn't be converted to a UIImage
                     avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
                 }
             } else {
+                // Handle the case where model.image is nil
                 avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
             }
+
 
             // Configure other avatarButton properties as needed
             avatarButton.tag = index
@@ -177,20 +183,23 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
     }
 
 
-    @objc func avatarTapped(_ sender: UITapGestureRecognizer) {
-        guard let index = sender.view?.tag else { return }
-        print("Avatar tapped at index: \(index)")
+    @objc func avatarTapped() {
+        print("Avatar tapped!")
 
-        // Add your animation and navigation logic here
-
-        // Example: Blink animation
+        // Add flick animation
         UIView.animate(withDuration: 0.1, animations: {
-            sender.view?.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
+          
         }) { _ in
             UIView.animate(withDuration: 0.1) {
-                sender.view?.transform = .identity
+               
             }
         }
+
+        // Create an instance of SelectOptionViewController
+        let selectOptionViewController = SelectOptionViewController()
+
+        // Push the SelectOptionViewController onto the navigation stack
+        navigationController?.pushViewController(selectOptionViewController, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

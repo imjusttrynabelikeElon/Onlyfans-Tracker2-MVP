@@ -21,7 +21,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
      var modelData: [Manager] = []  // Ensure Model struct is defined
     var managerImageView: UIImageView!
     weak var delegate: ModelsNavSelectorDelegate?
-    
+    var userData: UserData?
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -107,7 +107,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
               }
         
         print(modelData)
-        navigationItem.hidesBackButton = true
+        navigationItem.hidesBackButton = false
         // ... (your existing code)
 
         // Create manager image view
