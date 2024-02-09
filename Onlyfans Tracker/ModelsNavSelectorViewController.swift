@@ -104,6 +104,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         if let managerName = managerName, let managerImage = managerImage {
                   let currentManager = Manager(name: managerName, phoneNumber: "", email: "")
                   modelData.append(currentManager)
+            print(currentManager.imageData)
               }
         
         print(modelData)

@@ -21,6 +21,7 @@ class SelectOptionViewController: UIViewController {
        
         // Retrieve user data from UserDataManager
               userData = UserDataManager.shared.userData
+               
 
               // Ensure userData is set before attempting to load the selected model
               if let userData = userData {
@@ -292,3 +293,5 @@ class SelectOptionViewController: UIViewController {
         }
     }
 }
+
+// fix the small bug where it would not push to the link because inside of the addLinksVC the user enters the name but leaves a space at the end. That makes the url not push for some reason.

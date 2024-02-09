@@ -313,7 +313,9 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
 
         if currentModel > totalModels {
             // Print modelData for debugging
-            print("Model Data:")
+            print("Model Data: \(modelData)")
+            userData?.emptyModelData.append(contentsOf: modelData)
+            print("\( userData?.emptyModelData)rgergewewe")
             for (index, model) in modelData.enumerated() {
                 print("Model \(index + 1) - Image: \(model.image != nil ? "Set" : "Not Set")")
             }
@@ -340,6 +342,7 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
     @objc private func finishButtonTapped() {
         // Perform any additional actions if needed before pushing back
         // to OnboardingViewController
+        UserDataPersistence.shared.saveUserData(userData: self.userData!)
    saveSocialInfo()
         // Pass the modelData to the delegate before popping back
         delegate?.didAddModels(modelData)
@@ -383,6 +386,7 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         
         // Append the model instance to the modelData array
         modelData.append(currentModelData)
+        userData?.emptyModelData = modelData
         
         // Print the data for the current model
         print("Model \(currentModel) Data:")
@@ -405,6 +409,9 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         if let onlyFansLink = currentModelData.onlyFansLink {
             userData?.socialInfo.onlyFansLink = onlyFansLink
             print("CHECKER OnlyFansLink: \(onlyFansLink)")
+            // Save the user data to UserDefaults
+          
+
         } else {
             print("CHECKER OnlyFansLink is nil")
         }
@@ -412,6 +419,7 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         if let instagram = currentModelData.instagram {
             userData?.socialInfo.instagram = instagram
             print("CHECKER Instagram: \(instagram)")
+         
         } else {
             print("CHECKER Instagram is nil")
         }
@@ -420,12 +428,19 @@ class AddModelLinksViewController: UIViewController, UITextFieldDelegate, UIImag
         userData?.socialInfo.twitter = currentModelData.twitter ?? ""
         print("CHECKER Twitter: \(userData?.socialInfo.twitter ?? "N/A")")
         UserDataSingleton.shared.socialInfo.instagram = userData?.socialInfo.instagram ?? "J"
+        // Save the user data to UserDefaults
+   //     UserDataPersistence.shared.saveUserData(userData: self.userData!)
+
      
         saveSocialInfo()
         UserDataManager.shared.updateSocialInfo(instagram: currentModelData.instagram, twitter: currentModelData.twitter, onlyFansLink: currentModelData.onlyFansLink)
+        // Save the user data to UserDefaults
+     //   UserDataPersistence.shared.saveUserData(userData: self.userData!)
+
         
         if let userData = userData {
             UserDataPersistence.shared.saveUserData(userData: userData)
+            print("loooookkk\( UserDataPersistence.shared.saveUserData(userData: userData))")
         }
      
         

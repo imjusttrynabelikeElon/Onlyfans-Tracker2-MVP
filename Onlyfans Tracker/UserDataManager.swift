@@ -75,6 +75,21 @@ class UserDataManager {
            saveUserData(userData)
        }
     
+    func saveModelData(_ modelData: [Model]) {
+          // Ensure userData is not nil before updating
+          guard var userData = self.userData else {
+              print("Error: UserData not available.")
+              return
+          }
+
+          // Update modelData property
+          userData.modelData = modelData
+
+          // Save updated userData
+          saveUserData(userData)
+      }
+
+    
     
 
     // Additional methods as needed...

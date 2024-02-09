@@ -36,6 +36,8 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
     
     
     var userData: UserData
+    let emptyModelData: [Model] = []
+    
     weak var delegate: AuthenticationDelegate?
     
     let socialInfoDictionary: [String: String] = [
@@ -153,7 +155,7 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
             print("User successfully logged in.")
 
             // Access userData here and perform necessary actions
-            print(self.userData)
+            
 
             // Navigate to the next screen based on user role
             self.handleUserRoleAndNavigate()
@@ -161,15 +163,43 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
     }
 
     func handleUserRoleAndNavigate() {
-         // Your logic to determine the next screen based on user role
-         // Example:
-         let selectOptionViewController = SelectOptionViewController()
-         selectOptionViewController.userData = self.userData
-         self.navigationController?.pushViewController(selectOptionViewController, animated: true)
-         
-         
-         
-     
+        guard let role = userData.role else {
+            // Handle the case where user role is not available
+            return
+        }
+
+        var destinationViewController: UIViewController?
+
+        switch role {
+        case .model:
+            // User is a manager
+            if userData.socialInfo.onlyFansLink == "" {
+                // Push to ModelsNavSelectorViewController if onlyFansLink is nil
+                destinationViewController = ModelsNavSelectorViewController()
+            } else {
+                // Push to NavSelectorViewController if onlyFansLink is not nil
+                destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
+            }
+            
+        case .manager:
+            // User is a model, navigate to NavSelectorViewController
+            destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
+        }
+
+        // Push to the appropriate view controller
+        if let destinationViewController = destinationViewController {
+            if let navSelectorVC = destinationViewController as? NavSelectorViewController {
+                navSelectorVC.userData = self.userData
+                navSelectorVC.modelData = userData.modelData!
+            } else if let modelsNavSelectorVC = destinationViewController as? ModelsNavSelectorViewController {
+                modelsNavSelectorVC.userData = self.userData
+            }
+
+            self.navigationController?.pushViewController(destinationViewController, animated: true)
+        } else {
+            // Handle the case where the destination view controller is not set
+            print("Error: Unable to determine destination view controller.")
+        }
     }
 
 
@@ -206,10 +236,10 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
                 self.userData = UserData(
                     uid: userId,
                     socialInfo: socialInfo,
-                    role: role,
+                    role: UserRole(rawValue: role) ?? .manager, // Replace "yourNewStringValue" with the updated string value
                     numberOfModels: nil,
                     managerName: nil,
-                    modelData: nil,
+                    modelData: self.userData.modelData,
                     contactInfo: contactInfo
                 )
 
@@ -227,6 +257,9 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
 
 
     // In your login function, set the delegate
+  
+    // In your login function, set the delegate
+    // In your login function, set the delegate
     func login(username: String, password: String) {
         Auth.auth().signIn(withEmail: username, password: password) { [weak self] authResult, error in
             // ... (existing code)
@@ -234,13 +267,19 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
             if let uid = authResult?.user.uid {
                 let sc = AddModelLinksViewController(numberOfModels: 0)
                 // Assuming LoginViewController has a delegate property
-                self?.delegate?.didSignIn(userData: UserData(uid: uid, socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""), role: nil, numberOfModels: nil, managerName: nil, modelData: nil, contactInfo: ContactInfo(email: "", phoneNumber: "")))
+
+                // Create an empty array for modelData
+             
+
+                self?.delegate?.didSignIn(userData: UserData(uid: uid, socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""),
+                                                              role: UserRole(rawValue: "role") ?? .manager,
+                                                             numberOfModels: nil, managerName: nil, modelData: self!.userData.modelData,
+                                                              contactInfo: ContactInfo(email: "", phoneNumber: "")))
                 // ... (rest of the code)
             }
-
         }
     }
-    
+
     
 
 
@@ -254,3 +293,4 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
         present(alert, animated: true, completion: nil)
     }
 }
+// next add the userdata as well make sure its not nil so we can pass it through

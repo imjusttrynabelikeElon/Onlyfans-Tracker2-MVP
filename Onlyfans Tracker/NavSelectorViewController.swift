@@ -18,11 +18,14 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
                // Access and update the userData's socialInfo
                self.userData?.socialInfo = socialInfo
+        
+        
     }
     
     func didAddModels(_ modelData: [Model]) {
         self.modelData = modelData
                collectionView.reloadData()
+        userData?.emptyModelData = self.modelData
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -60,8 +63,12 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
     override func viewDidLoad() {
            super.viewDidLoad()
+    //    UserDataPersistence.shared.saveUserData(userData: userData!)
 
            title = "Tap On One Of Your Models"
+        
+
+        UserDataManager.shared.saveModelData(modelData)
         navigationItem.hidesBackButton = true
         
            // ... (your existing code)
@@ -197,7 +204,7 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
         // Create an instance of SelectOptionViewController
         let selectOptionViewController = SelectOptionViewController()
-
+        UserDataPersistence.shared.saveUserData(userData: userData!)
         // Push the SelectOptionViewController onto the navigation stack
         navigationController?.pushViewController(selectOptionViewController, animated: true)
     }
@@ -219,11 +226,20 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
            // Create an instance of SelectOptionViewController
            let selectOptionViewController = SelectOptionViewController()
-
+//        UserDataPersistence.shared.saveUserData(userData: userData!)
+        
            // Pass the selected model data to the next view controller as needed
            let selectedModel = modelData[indexPath.item]
            selectOptionViewController.selectedModel = selectedModel
+        // Update userData?.emptyModelData to hold all models
+           userData?.emptyModelData = modelData
+        
 
+  //      print(userData?.emptyModelData)
+    
+
+          //   UserDataPersistence.shared.saveUserData(userData: userData?.modelData!)
+       
            // Push the SelectOptionViewController onto the navigation stack
            navigationController?.pushViewController(selectOptionViewController, animated: true)
        }

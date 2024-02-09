@@ -17,6 +17,9 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
     }
     
     private var authResult: AuthDataResult?
+    // Create an empty array for modelData
+               let emptyModelData: [Model] = []
+    
     func didSaveSocialInfo(instagram: String?, twitter: String?, onlyFansLink: String?) {
         guard let uid = authResult?.user.uid else {
             // Handle the case where uid is not available
@@ -31,10 +34,10 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
             userData = UserData(
                 uid: uid,
                 socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""),
-                role: nil,
+                role: UserRole(rawValue: "yourNewStringValue") ?? .model,
                 numberOfModels: nil,
                 managerName: nil,
-                modelData: nil,
+                modelData: emptyModelData,
                 contactInfo: ContactInfo(email: "", phoneNumber: "")
             )
         }
@@ -65,6 +68,8 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
     var instagram: String? = ""
     var twitter: String? = ""
     var onlyFansLink: String? = ""
+    var modelData: [Model]?
+    var userRole: UserRole?
    
       // Add a default initializer
   
@@ -204,12 +209,12 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
             return
         }
 
-        signUp(username: username, email: email, password: password, instagram: instagram!, twitter: twitter!, onlyFansLink: onlyFansLink!)
+        signUp(username: username, email: email, password: password, instagram: instagram!, twitter: twitter!, onlyFansLink: onlyFansLink!, modelData: nil, role: UserRole(rawValue: "yourNewStringValue") ?? .model, emptyModelData: emptyModelData)
     }
     
     
 
-    func signUp(username: String, email: String, password: String, instagram: String, twitter: String, onlyFansLink: String) {
+    func signUp(username: String, email: String, password: String, instagram: String?, twitter: String?, onlyFansLink: String?, modelData: [Model]?, role: UserRole, emptyModelData: [Model]) {
         Auth.auth().createUser(withEmail: email, password: password) { [weak self] authResult, error in
             guard let self = self else { return }
 
@@ -228,11 +233,13 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
                 // Create an instance of UserData
                 let userData = UserData(
                     uid: uid,
-                    socialInfo: SocialInfo(instagram: instagram, twitter: twitter, onlyFansLink: onlyFansLink),
-                    role: nil,
+                    socialInfo: SocialInfo(instagram: instagram ?? "", twitter: twitter ?? "", onlyFansLink: onlyFansLink ?? ""),
+                    role: role,
+                    
                     numberOfModels: nil,
                     managerName: nil,
-                    modelData: nil,
+                    modelData: modelData, // Use the provided emptyModelData
+    
                     contactInfo: ContactInfo(email: email, phoneNumber: "")
                 )
 
@@ -249,7 +256,6 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
             }
         }
     }
-
 
        // ... rest
 

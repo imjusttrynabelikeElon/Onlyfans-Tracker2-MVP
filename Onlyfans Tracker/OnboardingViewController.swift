@@ -17,13 +17,13 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
         
     }
     
-
+    var role: UserRole?
     var questions: [String] = ["Are you a Manager or Model?", "How many models do you have?", "What's your manager's name?"]
     var currentIndex: Int = 0
     
     var userData = UserData(
         uid: "", socialInfo: SocialInfo(instagram: "", twitter: "", onlyFansLink: ""),
-        role: nil,
+        role: UserRole(rawValue: "role") ?? .manager,
         numberOfModels: nil,
         managerName: nil,
         modelData: nil,
@@ -85,19 +85,27 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
         if option == "Manager" {
             // If Manager is selected, move to the next question
             currentIndex += 1
-        } else {
+            print(option)
+        } else if option == "Model" {
             // If Model is selected, skip to the third question
             currentIndex += 2
+            print(option)
         }
-        
-        // Save user's role in the UserData struct
-               userData.role = option
+
+        // Convert the String option to UserRole
+        if let userRole = UserRole(rawValue: option) {
+            // Save user's role in the UserData struct
+            userData.role = userRole
+            print(userData.role)
+        } else {
+            // Handle the case where the option cannot be converted to UserRole
+            print("Invalid option: \(option)")
+        }
 
         // Show the next question
         showQuestion()
-        
-      
     }
+
     // Call this function when onboarding is completed
      func onboardingCompleted() {
          // Save the userData in UserDefaults
@@ -128,6 +136,7 @@ class OnboardingViewController: UIPageViewController, UIPageViewControllerDelega
               print(loadedUserData.managerName)
               print(loadedUserData.numberOfModels)
               print(loadedUserData.modelData)
+              print(loadedUserData.role)
           }
       }
 }
