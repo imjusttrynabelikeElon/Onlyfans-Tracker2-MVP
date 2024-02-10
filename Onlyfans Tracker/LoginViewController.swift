@@ -11,6 +11,7 @@ import FirebaseDatabase
 
 protocol AuthenticationDelegate: AnyObject {
     func didSignIn(userData: UserData)
+    func didFetchManagerData(managerData: [Manager])
     
 }
 
@@ -37,6 +38,8 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
     
     var userData: UserData
     let emptyModelData: [Model] = []
+    var managerData: Manager?
+    let loadedManagerData = ManagerDataManager.shared.loadManagerData()
     
     weak var delegate: AuthenticationDelegate?
     
@@ -51,6 +54,7 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
     // Assuming you have an initializer for LoginViewController
      init(userData: UserData) {
          self.userData = userData
+         
          super.init(nibName: nil, bundle: nil)
      }
 
@@ -99,6 +103,7 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
             // Use userData as needed
             print(userData)
         }
+        print()
 
         setupUI()
         loginButton.addTarget(self, action: #selector(loginButtonTapped), for: .touchUpInside)
@@ -171,30 +176,48 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
         var destinationViewController: UIViewController?
 
         switch role {
-        case .model:
-            // User is a manager
-            if userData.socialInfo.onlyFansLink == "" {
-                // Push to ModelsNavSelectorViewController if onlyFansLink is nil
-                destinationViewController = ModelsNavSelectorViewController()
-            } else {
-                // Push to NavSelectorViewController if onlyFansLink is not nil
-                destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
-            }
-            
-        case .manager:
-            // User is a model, navigate to NavSelectorViewController
-            destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
-        }
+              case .model:
+                         // User is a model
+                         if userData.socialInfo.onlyFansLink == "" {
+                             // Push to ModelsNavSelectorViewController if onlyFansLink is nil
+                             if let managerData = managerData, let modelsData = managerData.managerData {
+                              
+                                 
+                                 destinationViewController = ModelsNavSelectorViewController(managerData: loadedManagerData)
+                             } else {
+                                 // Handle the case where managerData or managerData.managerData is nil
+                                 print("Error: managerData or managerData.managerData is nil")
+                             }
+                             let loadedManagerData = ManagerDataManager.shared.loadManagerData()
+                             destinationViewController = ModelsNavSelectorViewController(managerData: loadedManagerData)
+                             
+                             print("grreg33\(loadedManagerData)")
+                         }
+                  
+              case .manager:
+                  // User is a model, navigate to NavSelectorViewController
+                  destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
+              }
 
-        // Push to the appropriate view controller
-        if let destinationViewController = destinationViewController {
-            if let navSelectorVC = destinationViewController as? NavSelectorViewController {
-                navSelectorVC.userData = self.userData
-                navSelectorVC.modelData = userData.modelData!
-            } else if let modelsNavSelectorVC = destinationViewController as? ModelsNavSelectorViewController {
-                modelsNavSelectorVC.userData = self.userData
-            }
-
+              // Push to the appropriate view controller
+              if let destinationViewController = destinationViewController {
+                  if let navSelectorVC = destinationViewController as? NavSelectorViewController {
+                      navSelectorVC.userData = self.userData
+                      navSelectorVC.modelData = userData.modelData!
+                  } else if let modelsNavSelectorVC = destinationViewController as? ModelsNavSelectorViewController {
+                      let loadedManagerData = ManagerDataManager.shared.loadManagerData()
+                      modelsNavSelectorVC.modelData = loadedManagerData
+                      modelsNavSelectorVC.managerData = loadedManagerData
+                      modelsNavSelectorVC.manager?.imageData = managerData?.imageData
+                      
+                      
+                      modelsNavSelectorVC.manager = managerData
+                      
+                      
+                      print("grreg33\(loadedManagerData)")
+                  } 
+        
+        
             self.navigationController?.pushViewController(destinationViewController, animated: true)
         } else {
             // Handle the case where the destination view controller is not set
@@ -202,6 +225,33 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
         }
     }
 
+
+
+    // Fetch manager data
+    func fetchManagerData() {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            print("User ID is nil.")
+            return
+        }
+
+        let databaseRef = Database.database().reference().child("managers").child(userId)
+
+        databaseRef.observeSingleEvent(of: .value) { [weak self] (snapshot: DataSnapshot) in
+            guard let self = self else { return }
+
+            if let managerDataDict = snapshot.value as? [[String: Any]] {
+                let managerData = managerDataDict.compactMap { Manager(dictionary: $0) }
+                // Do something with the fetched managerData
+                print("Fetched managerData:", managerData)
+
+                // Call the delegate or update UI as needed
+                self.delegate?.didFetchManagerData(managerData: managerData)
+            } else {
+                // Handle error or set default manager data
+                print("Error fetching manager data.")
+            }
+        }
+    }
 
 
     func fetchUserData() {
@@ -275,6 +325,10 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
                                                               role: UserRole(rawValue: "role") ?? .manager,
                                                              numberOfModels: nil, managerName: nil, modelData: self!.userData.modelData,
                                                               contactInfo: ContactInfo(email: "", phoneNumber: "")))
+                self?.fetchManagerData()
+                
+                
+                
                 // ... (rest of the code)
             }
         }

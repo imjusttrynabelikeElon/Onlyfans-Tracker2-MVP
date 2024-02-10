@@ -12,12 +12,15 @@ class ManagerSelectOptionViewController: UIViewController {
     var selectedManager: Manager?
     private var verticalStackView3: UIStackView!
     var userData: UserData?
+    var managerData: ManagerStruct?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 255/255, green: 240/255, blue: 245/255, alpha: 1.0)
         title = "Pick Option"
         navigationItem.hidesBackButton = false
+        
+     
       
         setupButtons()
         setupSignOutButton()
@@ -144,14 +147,36 @@ class ManagerSelectOptionViewController: UIViewController {
         // Unwrap the optional email
         if let email = selectedManager?.email, !email.isEmpty {
             let emailURLString = "mailto:\(email)"
+            managerData?.email = selectedManager?.email
             
             // Create URL only if the string is not empty
             if let emailURL = URL(string: emailURLString), UIApplication.shared.canOpenURL(emailURL) {
                 UIApplication.shared.open(emailURL, options: [:], completionHandler: nil)
             }
+            
+            // Save the manager's email to UserDefaults
+            saveManagerEmailToUserDefaults(email)
         }
         print(selectedManager?.email)
+        managerData?.email = selectedManager?.email
     }
+
+    private func saveManagerEmailToUserDefaults(_ email: String) {
+        // Assuming you have access to the user's UID
+        guard let uid = userData?.uid else {
+            print("Error: User UID is nil.")
+            return
+        }
+
+        // Use a unique key for the manager's email
+        let key = "ManagerEmail_\(uid)"
+
+        // Save the email to UserDefaults
+        UserDefaults.standard.set(email, forKey: key)
+        // Make sure to synchronize UserDefaults
+        UserDefaults.standard.synchronize()
+    }
+
 
     @objc private func remindersTapped() {
         print("Reminders button tapped!")
@@ -162,30 +187,56 @@ class ManagerSelectOptionViewController: UIViewController {
 
     @objc private func instagramTapped() {
         print("Manager's Instagram button tapped!")
-        
+
         // Unwrap the optional string
-        if let instagramUsername = selectedManager?.instagram {
+        if let instagramUsername = selectedManager?.instagram, !instagramUsername.isEmpty {
             let instagramURLString = "https://www.instagram.com/\(instagramUsername)/"
             
+            managerData?.instagram = instagramUsername
+            print("\(managerData?.instagram) manager ig")
             // Create URL only if the string is not empty
             if let url = URL(string: instagramURLString), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
+
+            managerData?.instagram = instagramUsername
+            print("\(managerData?.instagram) manager ig")
+            // Save the manager's Instagram username to UserDefaults
+            saveManagerSocialMediaToUserDefaults(instagramUsername, socialMediaKey: "InstagramUsername")
         }
     }
 
     @objc private func twitterTapped() {
         print("Manager's Twitter button tapped!")
-        
+
         // Unwrap the optional string
-        if let twitterUsername = selectedManager?.twitter {
+        if let twitterUsername = selectedManager?.twitter, !twitterUsername.isEmpty {
             let twitterURLString = "https://twitter.com/\(twitterUsername)"
-            
+            managerData?.twitter = twitterUsername
             // Create URL only if the string is not empty
             if let url = URL(string: twitterURLString), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
+            managerData?.twitter = twitterUsername
+            // Save the manager's Twitter username to UserDefaults
+            saveManagerSocialMediaToUserDefaults(twitterUsername, socialMediaKey: "TwitterUsername")
         }
+    }
+
+    private func saveManagerSocialMediaToUserDefaults(_ username: String, socialMediaKey: String) {
+        // Assuming you have access to the user's UID
+        guard let uid = userData?.uid else {
+            print("Error: User UID is nil.")
+            return
+        }
+
+        // Use a unique key for the social media username
+        let key = "\(socialMediaKey)_\(uid)"
+
+        // Save the username to UserDefaults
+        UserDefaults.standard.set(username, forKey: key)
+        // Make sure to synchronize UserDefaults
+        UserDefaults.standard.synchronize()
     }
 
 }

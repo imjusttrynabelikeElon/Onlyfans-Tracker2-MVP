@@ -14,15 +14,29 @@ protocol ModelsNavSelectorDelegate: AnyObject {
     func didUpdateManagerData(_ manager: Manager)
 }
 
+
 class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var managerName: String?
      var managerImage: UIImage?
-     var modelData: [Manager] = []  // Ensure Model struct is defined
+     var modelData: [Manager] = [] // Ensure Model struct is defined
     var managerImageView: UIImageView!
     weak var delegate: ModelsNavSelectorDelegate?
     var userData: UserData?
+    var managerData: [Manager]
+    var manager: Manager?
+    var imageData: Data?
     
+    init(managerData: [Manager]) {
+        self.managerData = managerData
+         
+           super.init(nibName: nil, bundle: nil)
+       }
+
+       // Initializer that takes a NSCoder parameter (required by UIViewController)
+       required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")
+       }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return modelData.count
@@ -33,6 +47,8 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
             // Handle the case where modelData is empty or index is out of bounds
             // You can return a default cell or handle it in a way that fits your logic
             return collectionView.dequeueReusableCell(withReuseIdentifier: "DefaultCell", for: indexPath)
+            
+            
         }
 
         // Rest of your code to configure the cell using modelData
@@ -42,8 +58,10 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         // Assuming 'model' is an instance of the Manager class
         if let imageData: Data = model.imageData, let modelImage: UIImage = UIImage(data: imageData) {
             cell.imageView.image = modelImage
+            UserDefaults.standard.set(imageData, forKey: model.imageDataKey)
+            
         } else {
-            cell.imageView.image = UIImage(named: "default_avatar")
+            cell.imageView.image = UIImage(systemName: "person.circle")
         }
 
 
@@ -52,6 +70,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         return cell
     }
 
+    
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
           // Handle tap on a collection view cell
@@ -71,6 +90,20 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         
         // Retrieve the selected Manager
            let selectedManager = modelData[indexPath.item]
+        managerData = modelData
+        manager = selectedManager
+        imageData = selectedManager.imageData
+        selectedManager.getImage()
+        
+        manager?.managerData?.append(selectedManager)
+   //     ManagerDataPersistence.shared.saveManager(selectedManager)
+     
+        let managerDataPersistence = ManagerDataPersistence.shared
+ //       managerDataPersistence.saveManager((manager?.managerData?.first)!)
+      //  managerDataPersistence.saveManager(manager!)
+        UserDataSingleton.shared.modelData = manager?.managerData
+        
+        print("\(modelData)regrgegr4344343")
 
            // Get the reference to the storyboard
            let storyboard = UIStoryboard(name: "Main", bundle: nil)  // Replace "Main" with your actual storyboard name
@@ -79,6 +112,7 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
            if let managerSelectOptionViewController = storyboard.instantiateViewController(withIdentifier: "ManagerSelectOptionViewController") as? ManagerSelectOptionViewController {
                // Pass the selected Manager data to the next view controller
                managerSelectOptionViewController.selectedManager = selectedManager
+            //   ManagerDataPersistence.shared.saveManager(selectedManager)
 
                delegate?.didUpdateManagerData(selectedManager)
                // Push ManagerSelectOptionViewController onto the navigation stack
@@ -99,15 +133,56 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         super.viewDidLoad()
 
         title = "Tap On Your Manager"
+        
+        // Load and display the image if imageData is not nil
+            if let imageData = imageData {
+                let image = UIImage(data: imageData)
+                // Set the image to your UIImageView
+                managerImage =  UIImage(named: "pic")
+            }
+                managerImage =  UIImage(named: "pic")
+      
+        // Save the managerData for the current manager
+          ManagerDataManager.shared.saveManagerData(manager?.managerData ?? [])
+        
+        navigationItem.hidesBackButton = true
 
+          // Load the managerData when needed
+          let loadedManagerData = ManagerDataManager.shared.loadManagerData()
+      //  Data()
+          print(loadedManagerData)
         // Initialize modelData with the passed manager data
         if let managerName = managerName, let managerImage = managerImage {
-                  let currentManager = Manager(name: managerName, phoneNumber: "", email: "")
+            let currentManager = Manager(name: "IUIUH", phoneNumber: "", email: "", imageData: imageData, managerData: loadedManagerData)
+            
                   modelData.append(currentManager)
             print(currentManager.imageData)
               }
         
+        // Retrieve image data from UserDefaults
+        if let imageData = UserDefaults.standard.data(forKey: "managerImageData") {
+            let imageFromUserDefaults = UIImage(data: imageData)
+            
+            // Set the image to your UIImageView
+            managerImageView.image = imageFromUserDefaults
+        } else {
+            // Handle the case where image data is nil, set a default image or take appropriate action
+            if let defaultImage = UIImage(named: "default_avatar") {
+                managerImageView.image = defaultImage
+            } else {
+                // Handle the case where the image could not be loaded
+                print("Default image not found")
+            }
+
+        }
+
+        
         print(modelData)
+        
+        print("\(modelData)regrgegregregrrgegrregregrerger")
+        
+        manager?.managerData = modelData
+  
         navigationItem.hidesBackButton = false
         // ... (your existing code)
 
@@ -160,10 +235,12 @@ class ModelsNavSelectorViewController: UIViewController, UICollectionViewDelegat
         if let selectedManager = modelData.first {
             // Pass the selected Manager data to the next view controller
             managerSelectOptionViewController.selectedManager = selectedManager
-
+            Manager.saveCurrentManager(selectedManager)
             print(selectedManager)
+            
             // Push ManagerSelectOptionViewController onto the navigation stack
             navigationController?.pushViewController(managerSelectOptionViewController, animated: true)
+            
         }
     }
 

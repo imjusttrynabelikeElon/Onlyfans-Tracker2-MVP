@@ -28,6 +28,7 @@ class UserDataSingleton {
        var managerInstagram: String?
        var managerTwitter: String?
        var managerImage: UIImage?
+    var imageData: Data?
     
     private init() {
         // Initialize your UserData here

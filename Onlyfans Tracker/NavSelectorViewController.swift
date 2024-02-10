@@ -226,11 +226,12 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
            // Create an instance of SelectOptionViewController
            let selectOptionViewController = SelectOptionViewController()
-//        UserDataPersistence.shared.saveUserData(userData: userData!)
+       UserDataPersistence.shared.saveUserData(userData: userData!)
         
            // Pass the selected model data to the next view controller as needed
            let selectedModel = modelData[indexPath.item]
            selectOptionViewController.selectedModel = selectedModel
+        
         // Update userData?.emptyModelData to hold all models
            userData?.emptyModelData = modelData
         
@@ -238,7 +239,7 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
   //      print(userData?.emptyModelData)
     
 
-          //   UserDataPersistence.shared.saveUserData(userData: userData?.modelData!)
+          //  UserDataPersistence.shared.saveUserData(userData: userData?.modelData!)
        
            // Push the SelectOptionViewController onto the navigation stack
            navigationController?.pushViewController(selectOptionViewController, animated: true)

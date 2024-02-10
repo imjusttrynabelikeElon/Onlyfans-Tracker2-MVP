@@ -12,6 +12,10 @@ import FirebaseDatabase
 import FirebaseAuth
 
 class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLinkssDelegate, AddModelLinksDelegatee {
+    func didFetchManagerData(managerData: [Manager]) {
+        
+    }
+    
     func didTapNextButtonInAddModelLinks() {
         signUpButton.isHidden = true
     }
@@ -282,7 +286,9 @@ class SignUpViewController: UIViewController, AuthenticationDelegate, AddModelLi
         } else {
             // Handle the case where user data is not available
             print("Error: User data not available.")
+            ManagerDataManager.shared.loadManagerData()
         }
+      //  print(ManagerDataManager.shared.loadManagerData())
 
         // Push to LoginViewController
         if let userDataa = userData {
