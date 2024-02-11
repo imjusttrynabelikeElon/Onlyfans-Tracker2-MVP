@@ -221,7 +221,9 @@ class LoginViewController: UIViewController, AddModelLinksDelegate {
             self.navigationController?.pushViewController(destinationViewController, animated: true)
         } else {
             // Handle the case where the destination view controller is not set
+            destinationViewController = NavSelectorViewController(modelData: userData.modelData!)
             print("Error: Unable to determine destination view controller.")
+            self.navigationController?.pushViewController(destinationViewController!, animated: true)
         }
     }
 

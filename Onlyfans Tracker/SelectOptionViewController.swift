@@ -16,7 +16,7 @@ class SelectOptionViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 255/255, green: 240/255, blue: 245/255, alpha: 1.0)
         title = "Pick Option"
-        navigationItem.hidesBackButton = true
+      //  navigationItem.hidesBackButton = true
         
        
         // Retrieve user data from UserDataManager

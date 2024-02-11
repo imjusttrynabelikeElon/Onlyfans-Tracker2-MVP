@@ -147,7 +147,8 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
           // Dismiss the keyboard
           view.endEditing(true)
       }
-    // Inside NavSelectorViewController
+    
+    
     private func setupAvatars() {
         for (index, model) in modelData.enumerated() {
             let avatarButton = UIButton()
@@ -164,10 +165,9 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
                 avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
             }
 
-
             // Configure other avatarButton properties as needed
             avatarButton.tag = index
-            avatarButton.addTarget(self, action: #selector(avatarTapped), for: .touchUpInside)
+            avatarButton.addTarget(self, action: #selector(avatarTapped(_:)), for: .touchUpInside)
 
             // Calculate position based on the number of models
             let spacing: CGFloat = 20.0
@@ -189,25 +189,21 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         }
     }
 
+    @objc func avatarTapped(_ sender: UIButton) {
+        let location = sender.convert(CGPoint.zero, to: view)
+        
+        if sender.bounds.contains(location) {
+            print("Avatar tapped at index: \(sender.tag)")
 
-    @objc func avatarTapped() {
-        print("Avatar tapped!")
+            // Create an instance of SelectOptionViewController
+            let selectOptionViewController = SelectOptionViewController()
+            UserDataPersistence.shared.saveUserData(userData: userData!)
 
-        // Add flick animation
-        UIView.animate(withDuration: 0.1, animations: {
-          
-        }) { _ in
-            UIView.animate(withDuration: 0.1) {
-               
-            }
+            // Push the SelectOptionViewController onto the navigation stack
+            navigationController?.pushViewController(selectOptionViewController, animated: true)
         }
-
-        // Create an instance of SelectOptionViewController
-        let selectOptionViewController = SelectOptionViewController()
-        UserDataPersistence.shared.saveUserData(userData: userData!)
-        // Push the SelectOptionViewController onto the navigation stack
-        navigationController?.pushViewController(selectOptionViewController, animated: true)
     }
+
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
            // Handle tap on a collection view cell
@@ -226,11 +222,12 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
            // Create an instance of SelectOptionViewController
            let selectOptionViewController = SelectOptionViewController()
-       UserDataPersistence.shared.saveUserData(userData: userData!)
+//       UserDataPersistence.shared.saveUserData(userData: userData!)
         
            // Pass the selected model data to the next view controller as needed
            let selectedModel = modelData[indexPath.item]
            selectOptionViewController.selectedModel = selectedModel
+        selectOptionViewController.modelData = modelData
         
         // Update userData?.emptyModelData to hold all models
            userData?.emptyModelData = modelData
@@ -244,4 +241,20 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
            // Push the SelectOptionViewController onto the navigation stack
            navigationController?.pushViewController(selectOptionViewController, animated: true)
        }
+}
+
+extension UIButton {
+    var hitTestEdgeInsets: UIEdgeInsets {
+        get { return objc_getAssociatedObject(self, &AssociatedKeys.hitTestEdgeInsets) as? UIEdgeInsets ?? UIEdgeInsets.zero }
+        set { objc_setAssociatedObject(self, &AssociatedKeys.hitTestEdgeInsets, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    }
+
+    override open func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let hitFrame = bounds.inset(by: hitTestEdgeInsets)
+        return hitFrame.contains(point)
+    }
+}
+
+private struct AssociatedKeys {
+    static var hitTestEdgeInsets = "hitTestEdgeInsets"
 }
