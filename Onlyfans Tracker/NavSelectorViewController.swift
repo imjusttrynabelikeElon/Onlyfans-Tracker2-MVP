@@ -11,6 +11,11 @@ import SDWebImage
 import UIKit
 import SDWebImage
 
+
+
+
+
+
 class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, AddModelLinksDelegate {
     func didAddModels(_ models: [Model], socialInfo: SocialInfo) {
         // Handle the added models or perform any necessary actions
@@ -21,6 +26,7 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         
         
     }
+    
     
     func didAddModels(_ modelData: [Model]) {
         self.modelData = modelData
@@ -38,7 +44,8 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
         let model = modelData[indexPath.item]
         if let modelImage = model.image {
             cell.imageView.image = UIImage(data: modelImage)
-        } else {
+            cell.imageView.isUserInteractionEnabled = true
+        } else { 
             // Handle the case where modelImage is nil or unable to convert to UIImage
             cell.imageView.image = nil
         }
@@ -68,13 +75,15 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
            title = "Tap On One Of Your Models"
         
 
+
+        
         UserDataManager.shared.saveModelData(modelData)
         navigationItem.hidesBackButton = true
         
            // ... (your existing code)
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
-              view.addGestureRecognizer(tapGesture)
+      //  let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+            //  view.addGestureRecognizer(tapGesture)
 
         // Create a layout for the collection view
               let layout = UICollectionViewFlowLayout()
@@ -148,20 +157,18 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
           view.endEditing(true)
       }
     
-    
+    // Frereeggrg@gmail.com
     private func setupAvatars() {
+        let spacing: CGFloat = 20.0
+        let avatarWidth = (view.bounds.width - 60.0 - spacing * CGFloat(modelData.count - 1)) / CGFloat(modelData.count)
+
         for (index, model) in modelData.enumerated() {
             let avatarButton = UIButton()
 
-            if let modelImage = model.image {
-                if let image = UIImage(data: modelImage) {
-                    avatarButton.setImage(image, for: .normal)
-                } else {
-                    // Handle the case where the data couldn't be converted to a UIImage
-                    avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
-                }
+            if let modelImage = model.image, let image = UIImage(data: modelImage) {
+                avatarButton.setImage(image, for: .normal)
             } else {
-                // Handle the case where model.image is nil
+                // Handle the case where the data couldn't be converted to a UIImage
                 avatarButton.setImage(UIImage(named: "default_avatar"), for: .normal)
             }
 
@@ -169,30 +176,28 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
             avatarButton.tag = index
             avatarButton.addTarget(self, action: #selector(avatarTapped(_:)), for: .touchUpInside)
 
-            // Calculate position based on the number of models
-            let spacing: CGFloat = 20.0
-            let avatarWidth = view.bounds.width * 0.2
-            let totalSpacing = CGFloat(modelData.count - 1) * spacing
-            let totalWidth = CGFloat(modelData.count) * avatarWidth + totalSpacing
-            let startX = (view.bounds.width - totalWidth) / 2.0 + CGFloat(index) * (avatarWidth + spacing)
-
             // Set up constraints for avatarButton
             avatarButton.translatesAutoresizingMaskIntoConstraints = false
+          
             view.addSubview(avatarButton)
 
-            NSLayoutConstraint.activate([
-                avatarButton.topAnchor.constraint(equalTo: view.centerYAnchor, constant: -83),
-                avatarButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: startX),
-                avatarButton.widthAnchor.constraint(equalToConstant: avatarWidth),
-                avatarButton.heightAnchor.constraint(equalToConstant: avatarWidth)
-            ])
+            avatarButton.hitTestEdgeInsets = UIEdgeInsets(top: -avatarButton.bounds.height, left: -avatarButton.bounds.width, bottom: -avatarButton.bounds.height, right: -avatarButton.bounds.width)
+            
+                 NSLayoutConstraint.activate([
+                     avatarButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 60.0),
+                     avatarButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20.0 + CGFloat(index) * (avatarWidth + spacing)),
+                     avatarButton.widthAnchor.constraint(equalToConstant: avatarWidth),
+                     avatarButton.heightAnchor.constraint(equalToConstant: avatarWidth)
+                 ])
         }
     }
 
+    
+
     @objc func avatarTapped(_ sender: UIButton) {
-        let location = sender.convert(CGPoint.zero, to: view)
+       
         
-        if sender.bounds.contains(location) {
+    
             print("Avatar tapped at index: \(sender.tag)")
 
             // Create an instance of SelectOptionViewController
@@ -201,25 +206,17 @@ class NavSelectorViewController: UIViewController, UICollectionViewDelegate, UIC
 
             // Push the SelectOptionViewController onto the navigation stack
             navigationController?.pushViewController(selectOptionViewController, animated: true)
-        }
+        
     }
 
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
            // Handle tap on a collection view cell
         print("Image tapped at index: \(indexPath.item)")
-
-           // Add blink animation to the selected cell
-           if let cell = collectionView.cellForItem(at: indexPath) as? ModelCell {
-               UIView.animate(withDuration: 0.1, animations: {
-                   cell.imageView.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-               }) { _ in
-                   UIView.animate(withDuration: 0.1) {
-                       cell.imageView.transform = .identity
-                   }
-               }
-           }
-
+        collectionView.isUserInteractionEnabled = true
+      
+    
+         
            // Create an instance of SelectOptionViewController
            let selectOptionViewController = SelectOptionViewController()
 //       UserDataPersistence.shared.saveUserData(userData: userData!)
@@ -255,6 +252,8 @@ extension UIButton {
     }
 }
 
+
 private struct AssociatedKeys {
     static var hitTestEdgeInsets = "hitTestEdgeInsets"
 }
+

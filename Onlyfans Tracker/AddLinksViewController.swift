@@ -10,6 +10,11 @@ import Foundation
 
 
 
+import Foundation
+
+
+
+
 import UIKit
 
 
@@ -38,10 +43,7 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
        var managerName: String?
     var modelData: [Manager] = []  // Ensure Model struct is defined
     var ManagerName: String?
-    var managerData: Manager?
-    let loadedManagerData = ManagerDataManager.shared.loadManagerData()
-    var imageData: Data?
-    
+
 
     let instagramTextField: UITextField = {
         let textField = UITextField()
@@ -88,11 +90,6 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         super.viewDidLoad()
         setupUI()
         title = "Add Manager's Socials/Contact Info"
-        
-        let tap = UITapGestureRecognizer(target: self, action: #selector(taped))
-          view.addGestureRecognizer(tap)
-          NotificationCenter.default.addObserver(self, selector: #selector(KeyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-          NotificationCenter.default.addObserver(self, selector: #selector(KeyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         // Set the delegate for phoneNumberTextField, gmailTextField, and twitterTextField
         phoneNumberTextField.delegate = self
@@ -136,34 +133,6 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         
        }
     
-    @objc func taped(){
-      self.view.endEditing(true)
-    }
-
-    @objc func KeyboardWillShow(sender: NSNotification){
-
-        let keyboardSize : CGSize = ((sender.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.size)!
-        if self.view.frame.origin.y == 0{
-            self.view.frame.origin.y -= keyboardSize.height
-        }
-
-    }
-
-    @objc func KeyboardWillHide(sender : NSNotification){
-
-        let keyboardSize : CGSize = ((sender.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue.size)!
-        if self.view.frame.origin.y != 0{
-            self.view.frame.origin.y += keyboardSize.height
-        }
-
-    }
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(true)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-    }
-    
     func populateModelData() {
      
         // Add other managers as needed
@@ -173,75 +142,46 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
     }
 
     private func saveDataForCurrentManager() {
-            // Create a manager instance for the current manager
-          var currentManagerData = Manager(name: ManagerName ?? "rthhtrrththrrhttr",
-                                              phoneNumber: phoneNumberTextField.text ?? "",
-                                           email: gmailTextField.text ?? "", imageData: imageData, managerData: modelData)  // Pass image data
-          
+          // Create a manager instance for the current manager
+          var currentManagerData = Manager(name: ManagerName ?? "",
+                                           phoneNumber: phoneNumberTextField.text ?? "",
+                                           email: gmailTextField.text ?? "")
 
-             // Add other properties to the manager instance as needed
-             currentManagerData.instagram = instagramTextField.text
-             currentManagerData.twitter = twitterTextField.text
-          currentManagerData.imageData = managerImageView.image?.pngData()
+          // Add other properties to the manager instance as needed
+          currentManagerData.instagram = instagramTextField.text
+          currentManagerData.twitter = twitterTextField.text
 
-          
-             // Update UserDataSingleton with manager-related information
-             UserDataSingleton.shared.managerName = currentManagerData.name
-             UserDataSingleton.shared.managerPhoneNumber = currentManagerData.phoneNumber
-             UserDataSingleton.shared.managerEmail = currentManagerData.email
-             UserDataSingleton.shared.managerInstagram = currentManagerData.instagram
-             UserDataSingleton.shared.managerTwitter = currentManagerData.twitter
-             UserDataSingleton.shared.managerImage = currentManagerData.getImage()  //
-          
-            // Update the modelData array with the current manager's data
-            if let index = modelData.firstIndex(where: { $0.name == currentManagerData.name }) {
-                // If the manager is already in the modelData, update the data
-                modelData[index] = currentManagerData
-                managerData?.managerData = modelData
-            } else {
-                // If the manager is not in the modelData, append the data
-                modelData.append(currentManagerData)
-                managerData?.managerData = modelData
-                
-            }
+          // If you have additional properties, add them here.
 
-            // Print the data for the current manager
-          print("Manager Data: \(currentManagerData.managerData)")
-          UserDataSingleton.shared.modelData = managerData?.managerData
-            print("Name: \(currentManagerData.name)nba")
-            print("Phone Number: \(currentManagerData.phoneNumber)")
-            print("Email: \(currentManagerData.email)")
-            print("Instagram: \(currentManagerData.instagram ?? "N/A")")
-            print("Twitter: \(currentManagerData.twitter ?? "N/A")")
-          
-          managerData?.twitter = currentManagerData.twitter
-          managerData?.instagram = currentManagerData.instagram
-          managerData?.email = currentManagerData.email
-          managerData?.phoneNumber = currentManagerData.phoneNumber
-          managerData?.name = currentManagerData.name
-          managerData?.imageData = currentManagerData.imageData
-          
-          managerData?.managerData = loadedManagerData
-          
-          UserDataSingleton.shared.modelData = managerData?.managerData
-          
-            // Print the image data if needed
-          if let imageData = currentManagerData.imageData, let modelImage = UIImage(data: imageData) {
-                print("Image Data: \(imageData)")
-              
-            } else {
-                print("No Image Data")
-            }
+          // Update the modelData array with the current manager's data
+          if let index = modelData.firstIndex(where: { $0.name == currentManagerData.name }) {
+              // If the manager is already in the modelData, update the data
+              modelData[index] = currentManagerData
+          } else {
+              // If the manager is not in the modelData, append the data
+              modelData.append(currentManagerData)
+          }
 
-            // Reset text fields and remove the image for the next manager
-     //       resetTextFields()
-      //      managerImageView.image = nil // Remove the image
+          // Print the data for the current manager
+          print("Manager Data:")
+          print("Name: \(currentManagerData.name)")
+          print("Phone Number: \(currentManagerData.phoneNumber)")
+          print("Email: \(currentManagerData.email)")
+          print("Instagram: \(currentManagerData.instagram ?? "N/A")")
+          print("Twitter: \(currentManagerData.twitter ?? "N/A")")
 
-            // Disable Next button until text fields are filled again
-            nextButton.isEnabled = false
-        }
- //  how do i add imagedata that the user picked inside   imageData: ,
+          // Print the image data if needed
+        
 
+          // Reset text fields and remove the image for the next manager
+   //       resetTextFields()
+          managerImageView.image = nil // Remove the image
+
+          // Disable Next button until text fields are filled again
+          nextButton.isEnabled = false
+      }
+
+    
     
     @objc private func nextButtonTapped() {
         // Ensure the necessary conditions are met before navigating
@@ -253,18 +193,13 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         print(saveDataForCurrentManager())
 
         // Create an instance of ModelsNavSelectorViewController
-        let modelsNavSelectorVC = ModelsNavSelectorViewController(managerData: loadedManagerData)
+        let modelsNavSelectorVC = ModelsNavSelectorViewController(managerData: modelData)
 
         // Pass data to the next view controller
         modelsNavSelectorVC.managerName = managerName
         modelsNavSelectorVC.managerImage = managerImage
         modelsNavSelectorVC.modelData = modelData  // Pass the model data
 
-        UserDataSingleton.shared.managerImage = managerImage
-        UserDataSingleton.shared.managerName = ManagerName
-        UserDataSingleton.shared.modelData = modelData
-     //   UserDataSingleton.shared.managerImage = imageData
-        
         // Set the delegate to self (AddLinksViewController) to receive updated manager data
 
         // Use the same navigation controller to push the ModelsNavSelectorViewController
@@ -419,4 +354,3 @@ class AddLinksViewController: UIViewController, UITextFieldDelegate, UIImagePick
         return true
     }
 }
- //look. why is the imagedata the onlything thats not saving the image value

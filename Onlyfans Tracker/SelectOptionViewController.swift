@@ -18,23 +18,24 @@ class SelectOptionViewController: UIViewController {
         title = "Pick Option"
       //  navigationItem.hidesBackButton = true
         
-       
         // Retrieve user data from UserDataManager
-              userData = UserDataManager.shared.userData
-               
+        if let loadedUserData = UserDataManager.shared.userData {
+            // Ensure userData is set before attempting to load the selected model
+            userData = loadedUserData
+            
+            // Load the selected model
+            self.loadSelectedModel { [weak self] in
+                // This completion block will be called when the model is loaded
+                print("OUHEWIUF \(self?.selectedModel)")
 
-              // Ensure userData is set before attempting to load the selected model
-              if let userData = userData {
-                  // Load the selected model
-                  self.loadSelectedModel { [weak self] in
-                      // This completion block will be called when the model is loaded
-                      print("OUHEWIUF \(self?.selectedModel)")
-
-                      // Perform actions that depend on the loaded model
-                      // For example, update the UI or navigate to the next screen
-                      self?.handleModelLoaded()
-                  }
-              }
+                // Perform actions that depend on the loaded model
+                // For example, update the UI or navigate to the next screen
+                self?.handleModelLoaded()
+            }
+        } else {
+            print("Error: UserData is nil")
+            // Handle the case where user data is nil (perhaps show an error message)
+        }
 
 
      
@@ -184,60 +185,50 @@ class SelectOptionViewController: UIViewController {
     @objc private func instagramTapped() {
         print("Model's Instagram button tapped!")
 
-        // Assuming 'instagramUsername' is the username and not the full URL
-        if let instagramUsername = userData?.socialInfo.instagram {
-            // Save the Instagram username to UserDefaults with user-specific key
-            let key = "InstagramUsername_\(userData?.uid ?? "")"
-            UserDefaults.standard.set(instagramUsername, forKey: key)
-        }
+        if let instagramUsername = selectedModel?.instagram, !instagramUsername.isEmpty {
+            // Save the Instagram username to userData
+            userData?.socialInfo.instagram = instagramUsername
 
-        if let instagramUsername = userData?.socialInfo.instagram,
-            let url = URL(string: "https://www.instagram.com/\(instagramUsername)/"),
-            UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if let url = URL(string: "https://www.instagram.com/\(instagramUsername)/"),
+                UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                print(instagramUsername)
+            }
+          
         }
-        print(selectedModel?.instagram)
     }
 
     @objc private func twitterTapped() {
         print("Model's Twitter button tapped!")
 
-        // Assuming 'twitterUsername' is the username and not the full URL
-        if let twitterUsername = userData?.socialInfo.twitter {
-            // Save the Twitter username to UserDefaults with user-specific key
-            let key = "TwitterUsername_\(userData?.uid ?? "")"
-            UserDefaults.standard.set(twitterUsername, forKey: key)
-        }
+        if let twitterUsername = selectedModel?.twitter, !twitterUsername.isEmpty {
+            // Save the Twitter username to userData
+            userData?.socialInfo.twitter = twitterUsername
 
-        if let twitterUsername = userData?.socialInfo.twitter,
-            let url = URL(string: "https://twitter.com/\(twitterUsername)/"),
-            UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if let url = URL(string: "https://twitter.com/\(twitterUsername)/"),
+                UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                print(twitterUsername)
+            }
+          
         }
-        print(selectedModel?.twitter)
     }
 
     @objc private func onlyFansTapped() {
         print("Model's OnlyFans button tapped!")
 
-        // Assuming 'onlyFansUsername' is the username and not the full URL
-        if let onlyFansUsername = userData?.socialInfo.onlyFansLink {
-            // Save the OnlyFans username to UserDefaults with user-specific key
-            let key = "OnlyFansUsername_\(userData?.uid ?? "")"
-            UserDefaults.standard.set(onlyFansUsername, forKey: key)
-        }
+        if let onlyFansUsername = selectedModel?.onlyFansLink, !onlyFansUsername.isEmpty {
+            // Save the OnlyFansLink to userData
+            userData?.socialInfo.onlyFansLink = onlyFansUsername
 
-        if let onlyFansUsername = userData?.socialInfo.onlyFansLink,
-            let url = URL(string: "https://onlyfans.com/\(onlyFansUsername)/"),
-            UIApplication.shared.canOpenURL(url) {
-            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            if let url = URL(string: "https://onlyfans.com/\(onlyFansUsername)/"),
+                UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                print(onlyFansUsername)
+            }
         }
-        print(selectedModel?.onlyFansLink)
-
-        // Save the OnlyFansLink to userData
-        // userData?.socialInfo.onlyFansLink = onlyFansUsername
-        print(userData?.socialInfo.onlyFansLink)
     }
+
 
     private func retrieveSocialMediaInfo() {
         if let instagramUsername = UserDefaults.standard.string(forKey: "InstagramUsername_\(userData?.uid ?? "")") {

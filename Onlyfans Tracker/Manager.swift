@@ -19,6 +19,7 @@ struct Manager: Codable {
     var twitter: String?
     var managerData: [Manager]?
     
+    
     let imageDataKey = "ImageDataKey"
 
     // Additional properties and methods as needed
